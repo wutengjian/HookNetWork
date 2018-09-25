@@ -1,0 +1,9 @@
+E:\HookNetWork\Downloader\bin\Debug\Downloader.dll
+E:\HookNetWork\Downloader\bin\Debug\Downloader.pdb
+E:\HookNetWork\Downloader\obj\Debug\Downloader.csprojAssemblyReference.cache
+E:\HookNetWork\Downloader\obj\Debug\Downloader.csproj.CoreCompileInputs.cache
+E:\HookNetWork\Downloader\obj\Debug\Downloader.dll
+E:\HookNetWork\Downloader\obj\Debug\Downloader.pdb
+E:\HookNetWork\Downloader\bin\Debug\Autofac.dll
+E:\HookNetWork\Downloader\bin\Debug\Autofac.xml
+E:\HookNetWork\Downloader\obj\Debug\Downloader.csproj.CopyComplete

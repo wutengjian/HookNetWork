@@ -1,0 +1,9 @@
+E:\HookNetWork\Extractor\bin\Debug\Extractor.dll
+E:\HookNetWork\Extractor\bin\Debug\Extractor.pdb
+E:\HookNetWork\Extractor\obj\Debug\Extractor.csproj.CoreCompileInputs.cache
+E:\HookNetWork\Extractor\obj\Debug\Extractor.dll
+E:\HookNetWork\Extractor\obj\Debug\Extractor.pdb
+E:\HookNetWork\Extractor\bin\Debug\Autofac.dll
+E:\HookNetWork\Extractor\bin\Debug\Autofac.xml
+E:\HookNetWork\Extractor\obj\Debug\Extractor.csprojAssemblyReference.cache
+E:\HookNetWork\Extractor\obj\Debug\Extractor.csproj.CopyComplete
