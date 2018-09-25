@@ -6,21 +6,19 @@ namespace Scheduler
 {
     public abstract class SchedulerBase : IScheduler
     {
-        public virtual void Monitor(Monitors.IMonitor monitor)
+        public virtual void Monitor(IMonitor monitor)
         {
             monitor.Init();
             monitor.Run();
         }
-        public virtual void Actuator(Actuators.IActuator actuator)
+        public virtual void Actuator(IActuator actuator)
         {
             actuator.Init();
             actuator.Run();
         }
 
-        public virtual void Distributor(Distributors.IDistributor distributor)
+        public virtual void TaskPool(ITaskPools taskPools)
         {
-            distributor.Init();
-            distributor.Run();
         }
     }
 }

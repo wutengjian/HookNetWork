@@ -2,21 +2,21 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Scheduler.Distributors
+namespace Scheduler
 {
     /// <summary>
-    /// 任务分发器
+    /// 任务执行器
     /// </summary>
-    public class DistributorTask : IDistributor
+    public class ActuatorTask : IActuator
     {
         public void Init()
         {
-           Console.WriteLine("DistributorTask Init");
+            Console.WriteLine("ActuatorTask Init");
         }
 
         public void Run()
         {
-          Console.WriteLine("DistributorTask Run");
+            Console.WriteLine("ActuatorTask Run");
         }
     }
 }

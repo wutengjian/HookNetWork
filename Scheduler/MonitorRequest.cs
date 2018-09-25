@@ -5,7 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Downloader;
 
-namespace Scheduler.Monitors
+namespace Scheduler
 {
     /// <summary>
     /// 请求监听器
@@ -28,16 +28,18 @@ namespace Scheduler.Monitors
             try
             {
                 SchedulerInfo.MonitorStatus = 1;
-                StartMonitor();//开始监听
+                MonitorActuator();//开始监听
+                MonitorDistributor();
             }
             catch
             {
-                EndMonitor();//结束监听
+                SchedulerInfo.MonitorStatus = 0;
+                Console.WriteLine("IMonitor 结束监听");
             }
         }
-        private void StartMonitor()
+        private void MonitorActuator()
         {
-            Console.WriteLine("IMonitor 开始监听");
+            Console.WriteLine("IMonitor 开始监听 任务执行器");
             Task.Run(() =>
             {
                 while (SchedulerInfo.MonitorStatus > 0)
@@ -47,10 +49,17 @@ namespace Scheduler.Monitors
                 }
             });
         }
-        private void EndMonitor()
+        private void MonitorDistributor()
         {
-            SchedulerInfo.MonitorStatus = 0;
-            Console.WriteLine("IMonitor 结束监听");
+            Console.WriteLine("IMonitor 开始监听 任务分发器");
+            Task.Run(() =>
+            {
+                while (SchedulerInfo.MonitorStatus > 0)
+                {
+                    //执行任务
+                    Thread.Sleep(100);//1毫秒
+                }
+            });
         }
     }
 }

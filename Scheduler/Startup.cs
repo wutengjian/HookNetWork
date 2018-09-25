@@ -20,11 +20,8 @@ namespace Scheduler
         public void ConfigureServices()
         {
             builder.RegisterType<SchedulerDefault>().As<IScheduler>().SingleInstance();//注册默认的调度器
-            builder.RegisterType<Monitors.MonitorRequest>().As<Monitors.IMonitor>();
-            builder.RegisterType<Distributors.DistributorTask>().As<Distributors.IDistributor>();
-            builder.RegisterType<Actuators.ActuatorTask>().As<Actuators.IActuator>();
-
-
+            builder.RegisterType<MonitorRequest>().As<IMonitor>();
+            builder.RegisterType<ActuatorTask>().As<IActuator>();
         }
         /// <summary>
         /// 中间件配置
@@ -33,9 +30,8 @@ namespace Scheduler
         {
             container = builder.Build();
             IScheduler scheduler = container.Resolve<IScheduler>();
-            scheduler.Monitor(container.Resolve<Monitors.IMonitor>());
-            scheduler.Distributor(container.Resolve<Distributors.IDistributor>());
-            scheduler.Actuator(container.Resolve<Actuators.IActuator>());
+            scheduler.Monitor(container.Resolve<IMonitor>());
+            scheduler.Actuator(container.Resolve<IActuator>());
         }
     }
 }

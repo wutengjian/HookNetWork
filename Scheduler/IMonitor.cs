@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Scheduler.Monitors
+namespace Scheduler
 {
     /// <summary>
-    /// 监听器
+    /// 监听器(实时监听生成任务)
     /// </summary>
     public interface IMonitor
     {
