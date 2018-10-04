@@ -30,6 +30,7 @@ namespace Scheduler
         {
             container = builder.Build();
             IScheduler scheduler = container.Resolve<IScheduler>();
+            scheduler.InitScheduler();
             scheduler.Monitor(container.Resolve<IMonitor>());
             scheduler.Actuator(container.Resolve<IActuator>());
         }

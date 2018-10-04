@@ -9,8 +9,8 @@ namespace Scheduler
     /// </summary>
     public interface IScheduler
     {
-        void Monitor( IMonitor monitor);
-        void TaskPool(ITaskPools taskPools);
+        void InitScheduler();
+        void Monitor(IMonitor monitor);
         void Actuator(IActuator actuator);
     }
 }

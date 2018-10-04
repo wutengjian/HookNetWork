@@ -17,8 +17,9 @@ namespace Scheduler
             actuator.Run();
         }
 
-        public virtual void TaskPool(ITaskPools taskPools)
+        public virtual void InitScheduler()
         {
+            new TaskPoolData();
         }
     }
 }

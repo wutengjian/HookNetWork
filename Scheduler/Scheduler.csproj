@@ -51,14 +51,14 @@
     <Compile Include="Context\SchedulerContextFactory.cs" />
     <Compile Include="IScheduler.cs" />
     <Compile Include="IMonitor.cs" />
-    <Compile Include="ITaskPools.cs" />
     <Compile Include="MonitorRequest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SchedulerBase.cs" />
     <Compile Include="SchedulerDefault.cs" />
     <Compile Include="SchedulerInfo.cs" />
     <Compile Include="Startup.cs" />
-    <Compile Include="TaskPools.cs" />
+    <Compile Include="TaskPoolData.cs" />
+    <Compile Include="TaskPoolInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -15,12 +15,6 @@ namespace Scheduler
         public void Init()
         {
             Console.WriteLine("MonitorRequest Init");
-            Downloader.StartUp DownloaderStartup = new Downloader.StartUp();
-            DownloaderStartup.ConfigureServices();
-            DownloaderStartup.Configure();
-            Extractor.StartUp ExtractorStartup = new Extractor.StartUp();
-            ExtractorStartup.ConfigureServices();
-            ExtractorStartup.Configure();
         }
         public void Run()
         {
@@ -28,38 +22,22 @@ namespace Scheduler
             try
             {
                 SchedulerInfo.MonitorStatus = 1;
-                MonitorActuator();//开始监听
-                MonitorDistributor();
+                Task.Run(() =>
+                {
+                    int num = -10;
+                    string key = "sys";
+                    while (SchedulerInfo.MonitorStatus == 1)
+                    {
+                        TaskPoolData.Enqueue(key, new TaskPoolInfo() { HashKey = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:fff") });
+                        Thread.Sleep(100);
+                    }
+                });
             }
             catch
             {
                 SchedulerInfo.MonitorStatus = 0;
                 Console.WriteLine("IMonitor 结束监听");
             }
-        }
-        private void MonitorActuator()
-        {
-            Console.WriteLine("IMonitor 开始监听 任务执行器");
-            Task.Run(() =>
-            {
-                while (SchedulerInfo.MonitorStatus > 0)
-                {
-                    //执行任务
-                    Thread.Sleep(100);//1毫秒
-                }
-            });
-        }
-        private void MonitorDistributor()
-        {
-            Console.WriteLine("IMonitor 开始监听 任务分发器");
-            Task.Run(() =>
-            {
-                while (SchedulerInfo.MonitorStatus > 0)
-                {
-                    //执行任务
-                    Thread.Sleep(100);//1毫秒
-                }
-            });
         }
     }
 }

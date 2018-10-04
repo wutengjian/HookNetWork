@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace Scheduler
 {
-    public interface ITaskPools
+    public class TaskPoolInfo
     {
+        public string HashKey { get; set; }
     }
 }
