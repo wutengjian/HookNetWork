@@ -1,9 +1,11 @@
 ﻿using Autofac;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
-namespace Downloader
+namespace DataAnalysis
 {
     public class Startup
     {
@@ -27,7 +29,7 @@ namespace Downloader
         }
         private void Run()
         {
-            new GlobalTimes().Run();
+            
         }
     }
 }

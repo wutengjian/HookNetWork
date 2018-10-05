@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Downloader", "Downloader\Do
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HookConsole", "HookConsole\HookConsole.csproj", "{6FD9CC47-4EFB-403C-9365-387CEB5B4893}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAnalysis", "DataAnalysis\DataAnalysis.csproj", "{986D1148-9A13-4CBA-9000-E309BA1FC173}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{6FD9CC47-4EFB-403C-9365-387CEB5B4893}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6FD9CC47-4EFB-403C-9365-387CEB5B4893}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6FD9CC47-4EFB-403C-9365-387CEB5B4893}.Release|Any CPU.Build.0 = Release|Any CPU
+		{986D1148-9A13-4CBA-9000-E309BA1FC173}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{986D1148-9A13-4CBA-9000-E309BA1FC173}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{986D1148-9A13-4CBA-9000-E309BA1FC173}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{986D1148-9A13-4CBA-9000-E309BA1FC173}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

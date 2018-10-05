@@ -14,7 +14,7 @@ namespace Scheduler
         public void Init()
         {
             Console.WriteLine("ActuatorTask Init");
-            Downloader.StartUp DownloaderStartup = new Downloader.StartUp();
+            Downloader.Startup DownloaderStartup = new Downloader.Startup();
             DownloaderStartup.ConfigureServices();
             DownloaderStartup.Configure();
             Extractor.StartUp ExtractorStartup = new Extractor.StartUp();
