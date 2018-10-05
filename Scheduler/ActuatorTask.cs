@@ -17,7 +17,7 @@ namespace Scheduler
             Downloader.Startup DownloaderStartup = new Downloader.Startup();
             DownloaderStartup.ConfigureServices();
             DownloaderStartup.Configure();
-            Extractor.StartUp ExtractorStartup = new Extractor.StartUp();
+            Extractor.Startup ExtractorStartup = new Extractor.Startup();
             ExtractorStartup.ConfigureServices();
             ExtractorStartup.Configure();
         }

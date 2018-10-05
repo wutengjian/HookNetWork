@@ -5,11 +5,11 @@ using System.Text;
 
 namespace Extractor
 {
-    public class StartUp
+    public class Startup
     {
         ContainerBuilder builder;
         IContainer container;
-        public StartUp()
+        public Startup()
         {
 
         }

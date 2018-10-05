@@ -29,7 +29,7 @@ namespace DataAnalysis
         }
         private void Run()
         {
-            
+            new WordDivision().Run();
         }
     }
 }

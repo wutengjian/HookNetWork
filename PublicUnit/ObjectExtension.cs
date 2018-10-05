@@ -5,7 +5,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace Downloader
+namespace PublicUnit
 {
     public static class ObjectExtension
     {

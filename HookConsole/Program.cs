@@ -11,6 +11,7 @@ namespace HookConsole
         static void Main(string[] args)
         {
             RunDownloader();
+            RunDataAnalysis();
             while (true)
             {
                 var key = Console.ReadLine();
@@ -47,6 +48,14 @@ namespace HookConsole
                       Startup.Configure();
                   });
         }
-
+        public static void RunDataAnalysis()
+        {
+            Task.Run(() =>
+                  {
+                      DataAnalysis.Startup Startup = new DataAnalysis.Startup();
+                      Startup.ConfigureServices();
+                      Startup.Configure();
+                  });
+        }
     }
 }

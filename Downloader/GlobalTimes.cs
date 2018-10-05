@@ -11,6 +11,8 @@ using System.Security.Cryptography;
 using System.Xml.XPath;
 using System.Data.SqlClient;
 using Dapper;
+using Models;
+using PublicUnit;
 
 namespace Downloader
 {
@@ -19,14 +21,16 @@ namespace Downloader
     /// </summary>
     public class GlobalTimes
     {
-        private string RootUrl = null;
-        private string RootAddress = null;
+        private string RootUrl = string.Empty;
+        private string RootAddress = string.Empty;
         HttpRequestFactory httpFactory = null;
+        string ConnStr = string.Empty;
         List<string> FileList = null;
         public GlobalTimes()
         {
             RootUrl = "http://www.globaltimes.cn/";
             RootAddress = "F:\\HookNetWork\\" + DateTime.Now.ToString("yyyyMMdd") + "\\GlobalTimes\\";
+            ConnStr = "Data Source=DESKTOP-WUTENGJ;Initial Catalog=HookNetWork;Persist Security Info=True;User ID=sa;Password=wutengjian123";
             httpFactory = new HttpRequestFactory();
             FileList = new List<string>();
             DirectoryInfo folder = new DirectoryInfo(RootAddress);
@@ -139,9 +143,8 @@ namespace Downloader
             }
             SaveToSQL(ArticleList);
         }
-        void SaveToSQL(List<ArticleInfo> ArticleList)
+        public void SaveToSQL(List<ArticleInfo> ArticleList)
         {
-            string ConnStr = "Data Source=DESKTOP-WUTENGJ;Initial Catalog=HookNetWork;Persist Security Info=True;User ID=sa;Password=wutengjian123";
             List<string> HashList = new List<string>();
             using (var conn = new SqlConnection(ConnStr))
             {
@@ -193,18 +196,6 @@ namespace Downloader
                 pwd = pwd + s[i].ToString("X");
             }
             return pwd;
-        }
-        class ArticleInfo
-        {
-            public string HashCode { get; set; }
-            public DateTime CreateTime { get; set; }
-            public string DataTitle { get; set; }
-            public string DataContent { get; set; }
-            public string DataType { get; set; }
-            public string KeyWordSort { get; set; }
-            public string DataSource { get; set; }
-            public string DataSourceLink { get; set; }
-            public DateTime ArticleTime { get; set; }
         }
     }
 }

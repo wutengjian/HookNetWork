@@ -64,10 +64,8 @@
   <ItemGroup>
     <Compile Include="GlobalTimes.cs" />
     <Compile Include="HttpRequestFactory.cs" />
-    <Compile Include="ObjectExtension.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DapperBase.cs" />
-    <Compile Include="SqlServerBulkCopy.cs" />
     <Compile Include="SqlServerTypes\Loader.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -93,6 +91,16 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="SqlServerTypes\readme.htm" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Models\Models.csproj">
+      <Project>{a2038ae9-c3c0-4ac5-a1ee-f61840b652be}</Project>
+      <Name>Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PublicUnit\PublicUnit.csproj">
+      <Project>{370ede4d-75a8-4c2f-a277-73b0bbb75655}</Project>
+      <Name>PublicUnit</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

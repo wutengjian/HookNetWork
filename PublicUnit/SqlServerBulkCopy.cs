@@ -7,7 +7,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Downloader
+namespace PublicUnit
 {
     public class SqlServerBulkCopy
     {
@@ -61,7 +61,6 @@ namespace Downloader
                     {
                         bulkCopy.ColumnMappings.Add(key, mapping[key]);
                     }
-
                     //将提供的数据源中的所有行复制到目标表中
                     bulkCopy.WriteToServer(sourceDataTable);
                 }
