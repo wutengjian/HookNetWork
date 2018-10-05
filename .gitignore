@@ -8,3 +8,5 @@
 /Downloader/obj
 /.vs
 /packages
+/Downloader/SqlServerTypes
+/Extractor/SqlServerTypes
