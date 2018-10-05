@@ -10,3 +10,5 @@
 /packages
 /Downloader/SqlServerTypes
 /Extractor/SqlServerTypes
+/DataAnalysis/bin
+/DataAnalysis/obj
