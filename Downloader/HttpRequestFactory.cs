@@ -91,6 +91,8 @@ namespace Downloader
         /// <returns></returns>
         public string http(string url, string method, string headers, string content, Encoding contentEncode, string proxyUrl)
         {
+            if (string.IsNullOrEmpty(url))
+                return null;
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
             request.Method = method;
             if (method.Equals("GET", StringComparison.InvariantCultureIgnoreCase))

@@ -10,12 +10,7 @@ namespace HookConsole
     {
         static void Main(string[] args)
         {
-            Task.Run(() =>
-                   {
-                       Scheduler.StartUp Startup = new Scheduler.StartUp();
-                       Startup.ConfigureServices();
-                       Startup.Configure();
-                   });
+            RunDownloader();
             while (true)
             {
                 var key = Console.ReadLine();
@@ -25,5 +20,33 @@ namespace HookConsole
                 }
             }
         }
+        public static void RunScheduler()
+        {
+            Task.Run(() =>
+                  {
+                      Scheduler.StartUp Startup = new Scheduler.StartUp();
+                      Startup.ConfigureServices();
+                      Startup.Configure();
+                  });
+        }
+        public static void RunDownloader()
+        {
+            Task.Run(() =>
+                  {
+                      Scheduler.StartUp Startup = new Scheduler.StartUp();
+                      Startup.ConfigureServices();
+                      Startup.Configure();
+                  });
+        }
+        public static void RunExtractor()
+        {
+            Task.Run(() =>
+                  {
+                      Scheduler.StartUp Startup = new Scheduler.StartUp();
+                      Startup.ConfigureServices();
+                      Startup.Configure();
+                  });
+        }
+
     }
 }

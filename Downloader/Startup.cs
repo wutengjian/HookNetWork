@@ -23,6 +23,11 @@ namespace Downloader
         /// </summary>
         public void Configure()
         {
+            Run();
+        }
+        private void Run()
+        {
+            new GlobalTimes().Run();
         }
     }
 }
