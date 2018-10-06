@@ -17,11 +17,7 @@ namespace Scheduler
             Downloader.Startup DownloaderStartup = new Downloader.Startup();
             DownloaderStartup.ConfigureServices();
             DownloaderStartup.Configure();
-            Extractor.Startup ExtractorStartup = new Extractor.Startup();
-            ExtractorStartup.ConfigureServices();
-            ExtractorStartup.Configure();
         }
-
         public void Run()
         {
             Console.WriteLine("ActuatorTask Run");
@@ -54,23 +50,7 @@ namespace Scheduler
                     Thread.Sleep(140);//1毫秒
                 }
             });
-        }
-        private void ActuatorExtractor()
-        {
-            Console.WriteLine("IActuator 开始执行 解析器");
-            Task.Run(() =>
-            {
-                while (true)
-                {
-                    var data = TaskPoolData.TryDequeue("sys");
-                    if (data != null)
-                    {
-                        Console.WriteLine("解析器：" + data.HashKey);
-                    }
-                    //执行任务
-                    Thread.Sleep(140);//1毫秒
-                }
-            });
+
         }
     }
 }

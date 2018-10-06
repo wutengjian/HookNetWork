@@ -5,8 +5,6 @@ VisualStudioVersion = 15.0.27703.2026
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scheduler", "Scheduler\Scheduler.csproj", "{3313B4A8-6686-4300-AC06-AB057F596B5D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Extractor", "Extractor\Extractor.csproj", "{E07B97FA-A305-4500-B829-8D91857F6443}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Downloader", "Downloader\Downloader.csproj", "{6EE527C2-4C02-4C7A-AB7C-BDD2C1721BDB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HookConsole", "HookConsole\HookConsole.csproj", "{6FD9CC47-4EFB-403C-9365-387CEB5B4893}"
@@ -16,6 +14,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Models", "Models\Models.csproj", "{A2038AE9-C3C0-4AC5-A1EE-F61840B652BE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PublicUnit", "PublicUnit\PublicUnit.csproj", "{370EDE4D-75A8-4C2F-A277-73B0BBB75655}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DBRepertory", "DBRepertory\DBRepertory.csproj", "{7A9DA09D-2F8F-4021-AF39-A3F0A2DA3754}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Extractor", "Extractor\Extractor.csproj", "{E07B97FA-A305-4500-B829-8D91857F6443}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,10 +29,6 @@ Global
 		{3313B4A8-6686-4300-AC06-AB057F596B5D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3313B4A8-6686-4300-AC06-AB057F596B5D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3313B4A8-6686-4300-AC06-AB057F596B5D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E07B97FA-A305-4500-B829-8D91857F6443}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E07B97FA-A305-4500-B829-8D91857F6443}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E07B97FA-A305-4500-B829-8D91857F6443}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E07B97FA-A305-4500-B829-8D91857F6443}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6EE527C2-4C02-4C7A-AB7C-BDD2C1721BDB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6EE527C2-4C02-4C7A-AB7C-BDD2C1721BDB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6EE527C2-4C02-4C7A-AB7C-BDD2C1721BDB}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -51,6 +49,14 @@ Global
 		{370EDE4D-75A8-4C2F-A277-73B0BBB75655}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{370EDE4D-75A8-4C2F-A277-73B0BBB75655}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{370EDE4D-75A8-4C2F-A277-73B0BBB75655}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7A9DA09D-2F8F-4021-AF39-A3F0A2DA3754}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7A9DA09D-2F8F-4021-AF39-A3F0A2DA3754}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7A9DA09D-2F8F-4021-AF39-A3F0A2DA3754}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7A9DA09D-2F8F-4021-AF39-A3F0A2DA3754}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E07B97FA-A305-4500-B829-8D91857F6443}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E07B97FA-A305-4500-B829-8D91857F6443}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E07B97FA-A305-4500-B829-8D91857F6443}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E07B97FA-A305-4500-B829-8D91857F6443}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

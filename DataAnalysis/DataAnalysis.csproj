@@ -54,6 +54,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DBRepertory\DBRepertory.csproj">
+      <Project>{7a9da09d-2f8f-4021-af39-a3f0a2da3754}</Project>
+      <Name>DBRepertory</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Models\Models.csproj">
       <Project>{a2038ae9-c3c0-4ac5-a1ee-f61840b652be}</Project>
       <Name>Models</Name>
