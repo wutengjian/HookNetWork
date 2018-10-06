@@ -33,18 +33,25 @@ namespace Downloader
             httpFactory = new HttpRequestFactory();
             FileList = new List<string>();
             DirectoryInfo folder = new DirectoryInfo(RootAddress);
-            foreach (FileInfo file in folder.GetFiles("*.html"))
+            if (folder.Exists)
             {
-                FileList.Add(file.FullName);
+                foreach (FileInfo file in folder.GetFiles("*.html"))
+                {
+                    FileList.Add(file.FullName);
+                }
             }
         }
         public void Run()
         {
-            Download();
-            ExtractDetails();
+            Task.Run(() =>
+            {
+                Download();
+                ExtractDetails();
+            });
         }
         public void Download()
         {
+            Console.WriteLine("Downloader>GlobalTimes>下载 @" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:fff"));
             Dictionary<string, string> TypeDic = new Dictionary<string, string>();
             TypeDic.Add("indexchina", RootUrl + "includes/indexchina.html");
             TypeDic.Add("indexbusiness", RootUrl + "includes/indexbusiness.html");
@@ -71,7 +78,7 @@ namespace Downloader
             {
                 foreach (Match infoMatch in Regex.Matches(httpContent, "<div class=\"row-content\">(?<info>((?!</p|row-content).)*?</p>)", RegexOptions.IgnoreCase | RegexOptions.Singleline))
                 {
-                    DetailsUrl = Regex.Match(infoMatch.Groups["info"].Value, "<a[^<>]*href=\"(?<info>[^<>\"]*)\">(?<title>[^<>]*)</a>", RegexOptions.IgnoreCase | RegexOptions.Singleline).Groups["info"].Value;
+                    DetailsUrl = Regex.Match(infoMatch.Groups["info"].Value, "<a[^<>]*href=\"(?<url>[^<>\"]*)\">(?<title>[^<>]*)</a>", RegexOptions.IgnoreCase | RegexOptions.Singleline).Groups["url"].Value;
                     if (FileList.Contains(RootAddress + FileHelper.GetHttpFileName(DetailsUrl, ".html")))
                         continue;
                     var dic = new Dictionary<string, string>();
@@ -100,6 +107,7 @@ namespace Downloader
         }
         public void ExtractDetails()
         {
+            Console.WriteLine("Downloader>GlobalTimes>解析 @" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:fff"));
             List<ArticleInfo> ArticleList = new List<ArticleInfo>();
             DirectoryInfo folder = new DirectoryInfo(RootAddress);
             foreach (FileInfo file in folder.GetFiles("*.html"))

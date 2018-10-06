@@ -29,6 +29,7 @@ namespace DataAnalysis
         }
         private void Run()
         {
+            Console.WriteLine("Downloader>Run @" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:fff"));
             new WordDivision().Run();
         }
     }
