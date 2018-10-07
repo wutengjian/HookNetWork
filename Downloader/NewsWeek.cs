@@ -50,7 +50,7 @@ namespace Downloader
         }
         public void Download()
         {
-            Console.WriteLine("Downloader>NewsWeek>开始下载 @" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:fff"));
+            Console.WriteLine("Downloader =》NewsWeek>开始下载 @" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:fff"));
             Dictionary<string, string> TypeDic = new Dictionary<string, string>();
             TypeDic.Add("us", RootUrl + "/us");
             TypeDic.Add("world", RootUrl + "/world");
@@ -68,7 +68,7 @@ namespace Downloader
                 DownloadList(TypeDic[key], key);
                 // });
             }
-            Console.WriteLine("Downloader>NewsWeek>下载完成 @" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:fff"));
+            Console.WriteLine("Downloader =》NewsWeek>下载完成 @" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:fff"));
         }
         public void DownloadList(string listurl, string KeyWordSort)
         {
@@ -102,7 +102,7 @@ namespace Downloader
                     {
                         break;
                     }
-                    Console.WriteLine("NewsWeek -》DownloadDetails：" + maxPage);
+                    Console.WriteLine("NewsWeek  =》DownloadDetails：" + maxPage);
                     Thread.Sleep(1000 * 30);
                     url = RootUrl + page;
                     httpContent = httpFactory.http(url, "GET", _headers, null, Encoding.UTF8, null).Replace("&gt;", " ");
@@ -110,7 +110,7 @@ namespace Downloader
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Downloader>NewsWeek>下载列表异常 @" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:fff"));
+                Console.WriteLine("Downloader =》NewsWeek>下载列表异常 @" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:fff"));
             }
         }
         public void DownloadDetails(string url, Dictionary<string, string> dic)
@@ -126,13 +126,13 @@ namespace Downloader
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Downloader>NewsWeek>下载详情异常 @" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:fff"));
+                Console.WriteLine("Downloader =》NewsWeek>下载详情异常 @" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:fff"));
             }
 
         }
         public void ExtractDetails()
         {
-            Console.WriteLine("Downloader>NewsWeek>解析 @" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:fff"));
+            Console.WriteLine("Downloader =》NewsWeek>解析 @" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:fff"));
             List<ArticleInfo> ArticleList = new List<ArticleInfo>();
             DirectoryInfo folder = new DirectoryInfo(RootAddress);
             foreach (FileInfo file in folder.GetFiles("*.html"))

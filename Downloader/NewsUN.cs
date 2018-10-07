@@ -51,7 +51,7 @@ namespace Downloader
         }
         public void Download()
         {
-            Console.WriteLine("Downloader>NewsUN>开始下载 @" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:fff"));
+            Console.WriteLine("Downloader =》NewsUN>开始下载 @" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:fff"));
             Dictionary<string, string> TypeDic = new Dictionary<string, string>();
             TypeDic.Add("Africa", RootUrl + "/en/news/region/africa");
             TypeDic.Add("Americas", RootUrl + "/en/news/region/americas");
@@ -88,7 +88,7 @@ namespace Downloader
                 DownloadList(TypeDic[key], key);
                 // });
             }
-            Console.WriteLine("Downloader>NewsUN>下载完成 @" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:fff"));
+            Console.WriteLine("Downloader =》NewsUN>下载完成 @" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:fff"));
         }
         public void DownloadList(string listurl, string KeyWordSort)
         {
@@ -121,7 +121,7 @@ namespace Downloader
                 {
                     break;
                 }
-                Console.WriteLine("NewsUN -》DownloadDetails：" + maxPage);
+                Console.WriteLine("NewsUN  =》DownloadDetails：" + maxPage);
                 Thread.Sleep(1000 * 60);
                 url = RootUrl + page;
                 httpContent = httpFactory.http(url, "GET", _headers, null, Encoding.UTF8, null).Replace("&gt;", " ");
@@ -138,7 +138,7 @@ namespace Downloader
         }
         public void ExtractDetails()
         {
-            Console.WriteLine("Downloader>NewsUN>解析 @" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:fff"));
+            Console.WriteLine("Downloader =》NewsUN>解析 @" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:fff"));
             List<ArticleInfo> ArticleList = new List<ArticleInfo>();
             DirectoryInfo folder = new DirectoryInfo(RootAddress);
             foreach (FileInfo file in folder.GetFiles("*.html"))
