@@ -102,7 +102,7 @@ namespace Downloader
                     {
                         break;
                     }
-                    Console.WriteLine("NewsWeek  =》DownloadDetails：" + maxPage);
+                    Console.WriteLine("NewsWeek  =》DownloadList：" + maxPage+" @" + DateTime.Now.ToString("HH:mm:ss:fff"));
                     Thread.Sleep(1000 * 30);
                     url = RootUrl + page;
                     httpContent = httpFactory.http(url, "GET", _headers, null, Encoding.UTF8, null).Replace("&gt;", " ");
@@ -177,7 +177,7 @@ namespace Downloader
                 });
             }
             ArticleDal dal = new ArticleDal();
-            dal.Save(ArticleList);
+            dal.SaveList(ArticleList);
         }
     }
 }

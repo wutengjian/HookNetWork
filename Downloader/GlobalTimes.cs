@@ -72,7 +72,6 @@ namespace Downloader
             int maxPage = 0;
             do
             {
-
                 foreach (Match infoMatch in Regex.Matches(httpContent, "<div class=\"row-content\">(?<info>((?!</p|row-content).)*?</p>)", RegexOptions.IgnoreCase | RegexOptions.Singleline))
                 {
                     DetailsUrl = Regex.Match(infoMatch.Groups["info"].Value, "<a[^<>]*href=\"(?<url>[^<>\"]*)\">(?<title>[^<>]*)</a>", RegexOptions.IgnoreCase | RegexOptions.Singleline).Groups["url"].Value;
@@ -90,7 +89,7 @@ namespace Downloader
                 {
                     break;
                 }
-                Console.WriteLine("GlobalTimes =》DownloadDetails：" + maxPage);
+                Console.WriteLine("GlobalTimes =》DownloadList：" + maxPage+" @" + DateTime.Now.ToString("HH:mm:ss:fff"));
                 url = listurl + page;
                 httpContent = httpFactory.http(url, "GET", null, null, Encoding.UTF8, null).Replace("&gt;", " ");
             } while (true);
@@ -145,7 +144,7 @@ namespace Downloader
                 });
             }
             ArticleDal dal = new ArticleDal();
-            dal.Save(ArticleList);
+            dal.SaveList(ArticleList);
         }
     }
 }

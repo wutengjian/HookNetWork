@@ -48,7 +48,8 @@ where not EXISTS(
                 SplitSentence(x.HashCode, x.DataTitle, "Title");
                 SplitSentence(x.HashCode, x.DataContent, "Content");
             });
-            SaveToSQL(dic.Values.ToList());
+            ArticleWordDivisionDal dal = new ArticleWordDivisionDal();
+            dal.SaveList(dic.Values.ToList());
         }
         public void SplitSentence(string HashCode, string Content, string DataType)
         {
@@ -90,20 +91,6 @@ where not EXISTS(
                     });
                 }
             }
-        }
-        public void SaveToSQL(List<ArticleWordDivisionInfo> DataList)
-        {
-            var data = SqlServerBulkCopy.ToDataTable<ArticleWordDivisionInfo>(DataList);
-            Dictionary<string, string> SqlMapping = new Dictionary<string, string>();
-            SqlMapping.Add("Word", "Word");
-            SqlMapping.Add("HashCode", "HashCode");
-            SqlMapping.Add("AppearNum", "AppearNum");
-            SqlMapping.Add("DataType", "DataType");
-            SqlMapping.Add("CreateTime", "CreateTime");
-            SqlMapping.Add("DataState", "DataState");
-            SqlServerBulkCopy.SqlBulkMapping(SqlMapping);
-            SqlServerBulkCopy.ConnStr = ConnStr;
-            SqlServerBulkCopy.SqlBulkCopyToServer(data, "ArticleWordDivision");
         }
     }
 }

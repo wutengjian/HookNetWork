@@ -17,11 +17,27 @@ namespace PublicUnit
             if (!Directory.Exists(RootAddress))
                 Directory.CreateDirectory(RootAddress);
             String FilePath = RootAddress + FileName;
-            //文件覆盖方式添加内容
-            StreamWriter file = new StreamWriter(FilePath, false);
-            file.Write(Content);
-            file.Close();
-            file.Dispose();
+            StreamWriter file = null;
+            try
+            {
+                //文件覆盖方式添加内容
+                file = new StreamWriter(FilePath, false);
+                file.Write(Content);
+            }
+            catch (Exception ex)
+            {
+                //文件覆盖方式添加内容
+                @FilePath = FilePath.Replace(".txt", "@.txt");
+                file = new StreamWriter(FilePath, false);
+                file.Write(Content);
+            }
+            finally
+            {
+                file.Close();
+                file.Dispose();
+            }
+
+
         }
         public static string GetHttpFileName(string url, string FileType)
         {

@@ -12,15 +12,9 @@ namespace DBRepertory
     public class ArticleDal
     {
         string ConnStr = "Data Source=DESKTOP-WUTENGJ;Initial Catalog=HookNetWork;Persist Security Info=True;User ID=sa;Password=wutengjian123";
-        public void Save(List<ArticleInfo> ArticleList)
+        public void SaveList(List<ArticleInfo> ArticleList)
         {
-            List<string> HashList = new List<string>();
-            using (var conn = new SqlConnection(ConnStr))
-            {
-                conn.Open();
-                HashList = conn.Query<string>("select HashCode from [dbo].[Article] with(nolock)").ToList<string>();
-                conn.Close();
-            }
+            List<string> HashList = GetHashlist();
             ArticleList = ArticleList.Where(x => HashList.Contains(x.HashCode) == false).ToList();
             var data = SqlServerBulkCopy.ToDataTable<ArticleInfo>(ArticleList);
             Dictionary<string, string> SqlMapping = new Dictionary<string, string>();
@@ -36,6 +30,28 @@ namespace DBRepertory
             SqlServerBulkCopy.SqlBulkMapping(SqlMapping);
             SqlServerBulkCopy.ConnStr = ConnStr;
             SqlServerBulkCopy.SqlBulkCopyToServer(data, "Article");
+        }
+        public List<ArticleInfo> Getlist()
+        {
+            List<ArticleInfo> List = new List<ArticleInfo>();
+            using (var conn = new SqlConnection(ConnStr))
+            {
+                conn.Open();
+                List = conn.Query<ArticleInfo>("select * from [dbo].[Article] with(nolock)").ToList();
+                conn.Close();
+            }
+            return List;
+        }
+        public List<string> GetHashlist()
+        {
+            List<string> List = new List<string>();
+            using (var conn = new SqlConnection(ConnStr))
+            {
+                conn.Open();
+                List = conn.Query<string>("select HashCode from [dbo].[Article] with(nolock)").ToList();
+                conn.Close();
+            }
+            return List;
         }
     }
 }

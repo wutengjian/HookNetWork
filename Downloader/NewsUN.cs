@@ -101,7 +101,6 @@ namespace Downloader
                 string Content = Regex.Match(httpContent, "<div class=\"view-content\">(?<info>((?!text-center|pagination).)*)<div class=\"text-center", RegexOptions.IgnoreCase | RegexOptions.Singleline).Groups["info"].Value;
                 foreach (Match infoMatch in Regex.Matches(Content, "<h\\d+ class=\"story-title\"><a href=\"(?<url>[^<>\"]*)\">(?<title>[^<>]*)</a>", RegexOptions.IgnoreCase | RegexOptions.Singleline))
                 {
-
                     DetailsUrl = infoMatch.Groups["url"].Value;
                     if (string.IsNullOrEmpty(DetailsUrl) == false && DetailsUrl.Contains("http") == false)
                     {
@@ -113,7 +112,7 @@ namespace Downloader
                     dic.Add("title", infoMatch.Groups["title"].Value);
                     dic.Add("KeyWordSort", KeyWordSort);
                     DownloadDetails(DetailsUrl, dic);
-                    Thread.Sleep(1000 * 10);
+                    Thread.Sleep(1000 * 5);
                 }
                 var page = Regex.Match(httpContent, "<a[^<>]*href=\"(?<info>[^<>\"]*)\">next", RegexOptions.IgnoreCase | RegexOptions.Singleline).Groups["info"].Value;
                 maxPage++;
@@ -121,8 +120,8 @@ namespace Downloader
                 {
                     break;
                 }
-                Console.WriteLine("NewsUN  =》DownloadDetails：" + maxPage);
-                Thread.Sleep(1000 * 60);
+                Console.WriteLine("NewsUN  =》DownloadList：" + maxPage + " @" + DateTime.Now.ToString("HH:mm:ss:fff"));
+                Thread.Sleep(1000 * 30);
                 url = RootUrl + page;
                 httpContent = httpFactory.http(url, "GET", _headers, null, Encoding.UTF8, null).Replace("&gt;", " ");
             } while (true);
@@ -179,7 +178,7 @@ namespace Downloader
                 });
             }
             ArticleDal dal = new ArticleDal();
-            dal.Save(ArticleList);
+            dal.SaveList(ArticleList);
         }
     }
 }

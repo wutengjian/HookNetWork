@@ -7,26 +7,30 @@ using System.Threading.Tasks;
 namespace Models
 {
     /// <summary>
-    /// 单词切分
+    /// 语言对照信息
     /// </summary>
-    public class ArticleWordDivisionInfo
+    public class LanguageComparisonInfo
     {
         /// <summary>
-        /// 单词
-        /// </summary>
-        public string Word { get; set; }
-        /// <summary>
-        /// 单词来源的HashCode(Article表)
-        /// </summary>
-        public string HashCode { get; set; }
-        /// <summary>
-        /// 出现次数
-        /// </summary>
-        public int AppearNum { get; set; }
-        /// <summary>
-        /// 数据类型:标题、正文、副标题 等
+        /// 数据类型：单词、语句等
         /// </summary>
         public string DataType { get; set; }
+        /// <summary>
+        /// 原文
+        /// </summary>
+        public string OriginalText { get; set; }
+        /// <summary>
+        /// 译文
+        /// </summary>
+        public string Translation { get; set; }
+        /// <summary>
+        /// 原文语言
+        /// </summary>
+        public string OriginalLang { get; set; }
+        /// <summary>
+        /// 译文语言
+        /// </summary>
+        public string TranslationLang { get; set; }
         /// <summary>
         /// 创建时间
         /// </summary>
