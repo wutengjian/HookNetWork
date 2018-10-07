@@ -94,6 +94,7 @@ namespace Downloader
             if (string.IsNullOrEmpty(url))
                 return null;
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+            request.Timeout = 1000 * 30;//超时6秒
             request.Method = method;
             if (method.Equals("GET", StringComparison.InvariantCultureIgnoreCase))
             {
@@ -137,7 +138,7 @@ namespace Downloader
                     foreach (string item in spilit)
                     {
                         var kv = item.Split('=');
-                        if (kv.Length == 2&&kv[0].Contains(',')==false)
+                        if (kv.Length == 2 && kv[0].Contains(',') == false)
                             cc.Add(new Cookie(kv[0].Trim(), kv[1].Trim()));
                     }
                 }
@@ -147,6 +148,7 @@ namespace Downloader
             {
                 sw.Stop();
                 AvgResponseMilliseconds = sw.ElapsedMilliseconds;
+                Console.WriteLine("http请求异常：" + ex.Message);
                 return "";
             }
             string result = getResponseBody(response);

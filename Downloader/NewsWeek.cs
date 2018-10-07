@@ -32,7 +32,6 @@ namespace Downloader
                         Accept-Language:zh-CN 
                         Host:www.newsweek.com 
                         If-Modified-Since:Sat, 06 Oct 2018 15:18:06 GMT 
-                        If-None-Match:'1538839086-1'
                         User-Agent:Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.10240";
             FileList = new List<string>();
             DirectoryInfo folder = new DirectoryInfo(RootAddress);
@@ -46,15 +45,12 @@ namespace Downloader
         }
         public void Run()
         {
-            Task.Run(() =>
-            {
-                Download();
-                ExtractDetails();
-            });
+            Download();
+            ExtractDetails();
         }
         public void Download()
         {
-            Console.WriteLine("Downloader>NewsWeek>下载 @" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:fff"));
+            Console.WriteLine("Downloader>NewsWeek>开始下载 @" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:fff"));
             Dictionary<string, string> TypeDic = new Dictionary<string, string>();
             TypeDic.Add("us", RootUrl + "/us");
             TypeDic.Add("world", RootUrl + "/world");
@@ -72,47 +68,67 @@ namespace Downloader
                 DownloadList(TypeDic[key], key);
                 // });
             }
+            Console.WriteLine("Downloader>NewsWeek>下载完成 @" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:fff"));
         }
         public void DownloadList(string listurl, string KeyWordSort)
         {
             string url = listurl;
             string httpContent = httpFactory.http(url, "GET", _headers, null, Encoding.UTF8, null).Replace("&gt;", " ").Replace(">>", " ");
             string DetailsUrl = string.Empty;
-            do
+            int maxPage = 0;
+            try
             {
-                foreach (Match infoMatch in Regex.Matches(httpContent, "<article class=\"flex-sm\">(?<info>((?!<article|</article).)*</article>)", RegexOptions.IgnoreCase | RegexOptions.Singleline))
+                do
                 {
-                    string info = infoMatch.Groups["info"].Value;
-                    DetailsUrl = Regex.Match(infoMatch.Groups["info"].Value, "<a href=\"(?<url>[^<>\"]*)\">(?<title>[^<>]*)</a>", RegexOptions.IgnoreCase | RegexOptions.Singleline).Groups["url"].Value;
-                    if (string.IsNullOrEmpty(DetailsUrl) == false && DetailsUrl.Contains("http") == false)
+                    foreach (Match infoMatch in Regex.Matches(httpContent, "<article class=\"flex-sm\">(?<info>((?!<article|</article).)*</article>)", RegexOptions.IgnoreCase | RegexOptions.Singleline))
                     {
-                        DetailsUrl = RootUrl + DetailsUrl;
+                        string info = infoMatch.Groups["info"].Value;
+                        DetailsUrl = Regex.Match(info, "<a href=\"(?<url>[^<>\"]*)\">(?<title>[^<>]*)</a>", RegexOptions.IgnoreCase | RegexOptions.Singleline).Groups["url"].Value;
+                        if (string.IsNullOrEmpty(DetailsUrl) == false && DetailsUrl.Contains("http") == false)
+                        {
+                            DetailsUrl = RootUrl + DetailsUrl;
+                        }
+                        if (FileList.Contains(RootAddress + FileHelper.GetHttpFileName(DetailsUrl, ".html")))
+                            continue;
+                        var dic = new Dictionary<string, string>();
+                        dic.Add("title", Regex.Match(info, "<a href=\"(?<url>[^<>\"]*)\">(?<title>[^<>]*)</a>", RegexOptions.IgnoreCase | RegexOptions.Singleline).Groups["title"].Value);
+                        dic.Add("KeyWordSort", KeyWordSort);
+                        DownloadDetails(DetailsUrl, dic);
+                        Thread.Sleep(1000 * 3);
                     }
-                    if (FileList.Contains(RootAddress + FileHelper.GetHttpFileName(DetailsUrl, ".html")))
-                        continue;
-                    var dic = new Dictionary<string, string>();
-                    dic.Add("title", Regex.Match(infoMatch.Groups["info"].Value, "<a href=\"(?<url>[^<>\"]*)\">(?<title>[^<>]*)</a>", RegexOptions.IgnoreCase | RegexOptions.Singleline).Groups["title"].Value);
-                    dic.Add("KeyWordSort", KeyWordSort);
-                    DownloadDetails(DetailsUrl, dic);
-                    Thread.Sleep(1000);
-                }
-                var page = Regex.Match(httpContent, "<a href=\"(?<info>[^<>\"]*)\">Next</a>", RegexOptions.IgnoreCase | RegexOptions.Singleline).Groups["info"].Value;
-                if (string.IsNullOrEmpty(page))
-                {
-                    break;
-                }
-                url = listurl + page;
-                httpContent = httpFactory.http(RootUrl + "/" + url, "GET", _headers, null, Encoding.UTF8, null).Replace("&gt;", " ");
-            } while (true);
+                    var page = Regex.Match(httpContent, "<a href=\"(?<info>[^<>\"]*)\">Next</a>", RegexOptions.IgnoreCase | RegexOptions.Singleline).Groups["info"].Value;
+                    maxPage++;
+                    if (string.IsNullOrEmpty(page) || maxPage > 100)
+                    {
+                        break;
+                    }
+                    Console.WriteLine("NewsWeek -》DownloadDetails：" + maxPage);
+                    Thread.Sleep(1000 * 30);
+                    url = RootUrl + page;
+                    httpContent = httpFactory.http(url, "GET", _headers, null, Encoding.UTF8, null).Replace("&gt;", " ");
+                } while (true);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Downloader>NewsWeek>下载列表异常 @" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:fff"));
+            }
         }
         public void DownloadDetails(string url, Dictionary<string, string> dic)
         {
-            string httpContent = httpFactory.http(url, "GET", _headers, null, Encoding.UTF8, null);
-            if (string.IsNullOrEmpty(httpContent))
-                return;
-            httpContent = httpContent + "<Mytitle>" + dic["title"] + "</Mytitle>" + "<KeyWordSort>" + dic["KeyWordSort"] + "</KeyWordSort>" + "<MyUrl>" + url + "</MyUrl>";
-            string FileName = FileHelper.GetHttpFileName(url, ".html");
-            FileHelper.SavaFile(RootAddress, FileName, httpContent);
+            try
+            {
+                string httpContent = httpFactory.http(url, "GET", _headers, null, Encoding.UTF8, null);
+                if (string.IsNullOrEmpty(httpContent))
+                    return;
+                httpContent = httpContent + "<Mytitle>" + dic["title"] + "</Mytitle>" + "<KeyWordSort>" + dic["KeyWordSort"] + "</KeyWordSort>" + "<MyUrl>" + url + "</MyUrl>";
+                string FileName = FileHelper.GetHttpFileName(url, ".html");
+                FileHelper.SavaFile(RootAddress, FileName, httpContent);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Downloader>NewsWeek>下载详情异常 @" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:fff"));
+            }
+
         }
         public void ExtractDetails()
         {
@@ -140,10 +156,7 @@ namespace Downloader
                 {
                     content = Regex.Match(FileContent, "<div[^<>]*class=\"article-body\"[^<>]*>(?<info>((?!<div|</div).)*)</div>", RegexOptions.IgnoreCase | RegexOptions.Singleline).Groups["info"].Value;
                 }
-                content = Regex.Replace(content, "(<[^<>]*>|&nbsp;)", " ", RegexOptions.IgnoreCase | RegexOptions.Singleline);
-                content = Regex.Replace(content, "\\r", " ", RegexOptions.IgnoreCase | RegexOptions.Singleline);
-                content = Regex.Replace(content, "\\s{2,}", " ", RegexOptions.IgnoreCase | RegexOptions.Singleline);
-                content = content.Replace('\'', '’');
+                content = content.HtmlReplace();
                 string HashCode = FileHelper.MD5Encrypt32(DataSourceLink + DataTitle);
                 DateTime ArticleTime = DateTime.Now;
                 if (string.IsNullOrEmpty(ArticleTimeStr) == false)

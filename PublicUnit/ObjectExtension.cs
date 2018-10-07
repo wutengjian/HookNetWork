@@ -20,5 +20,12 @@ namespace PublicUnit
                 return Regex.Match(input, pattern, RegexOptions.IgnoreCase | RegexOptions.Singleline).Groups[key].Value;
             }
         }
+        public static string HtmlReplace(this string info)
+        {
+            info = Regex.Replace(info, "(<[^<>]*>|&nbsp;)", " ", RegexOptions.IgnoreCase | RegexOptions.Singleline);
+            info = Regex.Replace(info, "\\r", " ", RegexOptions.IgnoreCase | RegexOptions.Singleline);
+            info = Regex.Replace(info, "\\s{2,}", " ", RegexOptions.IgnoreCase | RegexOptions.Singleline);
+            return info.Replace('\'', '’');
+        }
     }
 }

@@ -30,6 +30,7 @@ namespace Downloader
             Console.WriteLine("Downloader>Run @" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:fff"));
             new GlobalTimes().Run();
             new NewsWeek().Run();
+            new NewsUN().Run();
         }
     }
 }

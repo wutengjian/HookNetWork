@@ -43,15 +43,12 @@ namespace Downloader
         }
         public void Run()
         {
-            Task.Run(() =>
-            {
-                Download();
-                ExtractDetails();
-            });
+            Download();
+            ExtractDetails();
         }
         public void Download()
         {
-            Console.WriteLine("Downloader>GlobalTimes>下载 @" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:fff"));
+            Console.WriteLine("Downloader>GlobalTimes>开始下载 @" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:fff"));
             Dictionary<string, string> TypeDic = new Dictionary<string, string>();
             TypeDic.Add("indexchina", RootUrl + "includes/indexchina.html");
             TypeDic.Add("indexbusiness", RootUrl + "includes/indexbusiness.html");
@@ -59,23 +56,23 @@ namespace Downloader
             TypeDic.Add("indexarts", RootUrl + "includes/indexarts.html");
             foreach (string key in TypeDic.Keys)
             {
-                //Task.Run(() =>
-                //{
                 string httpContent = httpFactory.http(TypeDic[key], "GET", null, null, Encoding.UTF8, null);
                 foreach (Match infoMatch in Regex.Matches(httpContent, "<li class=\"(nav-home|dropdown)\">\\s*<a href=\"(?<url>[^<>\"]*?)\">(?<info>[^<>]*?)</a>\\s*</li>", RegexOptions.IgnoreCase | RegexOptions.Singleline))
                 {
                     DownloadList(infoMatch.Groups["url"].Value, infoMatch.Groups["info"].Value);
                 }
-                // });
             }
+            Console.WriteLine("Downloader>GlobalTimes>下载完成 @" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:fff"));
         }
         public void DownloadList(string listurl, string KeyWordSort)
         {
             string url = listurl;
             string httpContent = httpFactory.http(url, "GET", null, null, Encoding.UTF8, null).Replace("&gt;", " ").Replace(">>", " ");
             string DetailsUrl = string.Empty;
+            int maxPage = 0;
             do
             {
+
                 foreach (Match infoMatch in Regex.Matches(httpContent, "<div class=\"row-content\">(?<info>((?!</p|row-content).)*?</p>)", RegexOptions.IgnoreCase | RegexOptions.Singleline))
                 {
                     DetailsUrl = Regex.Match(infoMatch.Groups["info"].Value, "<a[^<>]*href=\"(?<url>[^<>\"]*)\">(?<title>[^<>]*)</a>", RegexOptions.IgnoreCase | RegexOptions.Singleline).Groups["url"].Value;
@@ -88,10 +85,12 @@ namespace Downloader
                     Thread.Sleep(1000);
                 }
                 var page = Regex.Match(httpContent, "<a[^<>]*href=\"(?<info>[^<>\"]*)\">Next\\s*</a>", RegexOptions.IgnoreCase | RegexOptions.Singleline).Groups["info"].Value;
-                if (string.IsNullOrEmpty(page))
+                maxPage++;
+                if (string.IsNullOrEmpty(page) || maxPage > 100)
                 {
                     break;
                 }
+                Console.WriteLine("GlobalTimes -》DownloadDetails：" + maxPage);
                 url = listurl + page;
                 httpContent = httpFactory.http(url, "GET", null, null, Encoding.UTF8, null).Replace("&gt;", " ");
             } while (true);
@@ -125,10 +124,7 @@ namespace Downloader
                 }
                 string DataType = "新闻";
                 FileContent = Regex.Match(FileContent, "<div class=\"[^<>]*row-content\">(?<info>((?!<div|</div).)*)</div>", RegexOptions.IgnoreCase | RegexOptions.Singleline).Groups["info"].Value;
-                FileContent = Regex.Replace(FileContent, "(<[^<>]*>|&nbsp;)", " ", RegexOptions.IgnoreCase | RegexOptions.Singleline);
-                FileContent = Regex.Replace(FileContent, "\\r", " ", RegexOptions.IgnoreCase | RegexOptions.Singleline);
-                FileContent = Regex.Replace(FileContent, "\\s{2,}", " ", RegexOptions.IgnoreCase | RegexOptions.Singleline);
-                FileContent = FileContent.Replace('\'', '’');
+                FileContent = FileContent.HtmlReplace();
                 string HashCode = FileHelper.MD5Encrypt32(DataSourceLink + DataTitle);
                 DateTime ArticleTime = DateTime.Now;
                 if (string.IsNullOrEmpty(ArticleTimeStr) == false)
