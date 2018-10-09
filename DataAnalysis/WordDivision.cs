@@ -39,8 +39,7 @@ namespace DataAnalysis
 from [dbo].[Article] as A with(nolock) 
 where not EXISTS(
 	select top 1 1 from [dbo].[ArticleWordDivision] as AWD with(nolock) where A.HashCode=AWD.HashCode
-	)
-").ToList<ArticleInfo>();
+	)").ToList<ArticleInfo>();
                 conn.Close();
             }
             HashList.ForEach(x =>
@@ -53,7 +52,6 @@ where not EXISTS(
         }
         public void SplitSentence(string HashCode, string Content, string DataType)
         {
-
             var arr = Content.Split(' ');
             foreach (var key in arr)
             {

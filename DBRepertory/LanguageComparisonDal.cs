@@ -36,7 +36,7 @@ namespace DBRepertory
             using (var conn = new SqlConnection(ConnStr))
             {
                 conn.Open();
-                List = conn.Query<string>("SELECT DISTINCT [OriginalText]  FROM [dbo].[LanguageComparison] WITH(NOLOCK) ").ToList();
+                List = conn.Query<string>("SELECT DISTINCT [OriginalText]  FROM [dbo].[LanguageComparison] WITH(NOLOCK) ", commandTimeout: 300).ToList();
                 conn.Close();
             }
             return List;

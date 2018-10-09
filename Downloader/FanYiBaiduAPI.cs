@@ -36,7 +36,7 @@ namespace Downloader
         }
         public void Run()
         {
-            //Download();
+            Download();
             ExtractDetails();
         }
         public void Download()

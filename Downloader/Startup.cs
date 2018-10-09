@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Downloader
 {
@@ -28,10 +29,10 @@ namespace Downloader
         private void Run()
         {
             Console.WriteLine("Downloader =》Run @" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:fff"));
-            //new GlobalTimes().Run();
-            //new NewsWeek().Run();
+            new GlobalTimes().Run();
+            new NewsWeek().Run();
             new NewsUN().Run();
-            //new FanYiBaiduAPI().Run();
+            new FanYiBaiduAPI().Run();
         }
     }
 }

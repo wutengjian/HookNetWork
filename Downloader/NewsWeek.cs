@@ -98,7 +98,7 @@ namespace Downloader
                     }
                     var page = Regex.Match(httpContent, "<a href=\"(?<info>[^<>\"]*)\">Next</a>", RegexOptions.IgnoreCase | RegexOptions.Singleline).Groups["info"].Value;
                     maxPage++;
-                    if (string.IsNullOrEmpty(page) || maxPage > 100)
+                    if (string.IsNullOrEmpty(page) || maxPage > 20)
                     {
                         break;
                     }

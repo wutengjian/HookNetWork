@@ -37,7 +37,7 @@ namespace DBRepertory
             using (var conn = new SqlConnection(ConnStr))
             {
                 conn.Open();
-                List = conn.Query<ArticleInfo>("select * from [dbo].[Article] with(nolock)").ToList();
+                List = conn.Query<ArticleInfo>("select * from [dbo].[Article] with(nolock)", commandTimeout: 300).ToList();
                 conn.Close();
             }
             return List;
@@ -48,7 +48,7 @@ namespace DBRepertory
             using (var conn = new SqlConnection(ConnStr))
             {
                 conn.Open();
-                List = conn.Query<string>("select HashCode from [dbo].[Article] with(nolock)").ToList();
+                List = conn.Query<string>("select HashCode from [dbo].[Article] with(nolock)", commandTimeout: 300).ToList();
                 conn.Close();
             }
             return List;
