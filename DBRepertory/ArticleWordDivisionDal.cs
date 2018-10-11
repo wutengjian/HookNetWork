@@ -48,7 +48,7 @@ namespace DBRepertory
             using (var conn = new SqlConnection(ConnStr))
             {
                 conn.Open();
-                List = conn.Query<string>(@"SELECT TOP 6000 Word FROM(
+                List = conn.Query<string>(@"SELECT Word FROM(
 	SELECT DISTINCT Word,SUM(AppearNum) OVER(PARTITION BY Word) AS RowSum 
 	FROM [dbo].[ArticleWordDivision] WITH(NOLOCK) 
 	WHERE DataState=1) AS T 

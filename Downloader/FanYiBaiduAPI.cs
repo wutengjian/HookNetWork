@@ -46,7 +46,8 @@ namespace Downloader
             ArticleWordDivisionDal dal = new ArticleWordDivisionDal();
             List<string> list = dal.GetListWord();
             List<string> listOld = GetWordExists();
-            list = list.Where(x => listOld.Contains(x) == false).ToList();
+            list = list.Where(x => listOld.Contains(x) == false).Take(10000).ToList();
+
             string appid = "20181007000215943";
             string key = "FUECNM4FlsQI53YBvz6o";
             Random random = new Random();
@@ -64,7 +65,7 @@ namespace Downloader
                 parm.AppendFormat("&salt={0}", salt);
                 parm.AppendFormat("&sign={0}", FileHelper.MD5Encrypt32(appid + q + salt + key).ToLower());
                 string httpContent = httpFactory.http(RootUrl + parm.ToString(), "GET", null, null, Encoding.UTF8, null);
-                //Thread.Sleep(1000);
+                Thread.Sleep(100);
                 FileHelper.SavaFile(RootAddress, word + ".txt", httpContent);
             }
             Console.WriteLine("Downloader =》FanYiBaiduAPI>下载完成 @" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:fff"));
