@@ -1,5 +1,0 @@
-E:\HookNetWork\DBModels\bin\Debug\DBModels.dll
-E:\HookNetWork\DBModels\bin\Debug\DBModels.pdb
-E:\HookNetWork\DBModels\obj\Debug\DBModels.csproj.CoreCompileInputs.cache
-E:\HookNetWork\DBModels\obj\Debug\DBModels.dll
-E:\HookNetWork\DBModels\obj\Debug\DBModels.pdb

@@ -12,3 +12,5 @@
 /Extractor/SqlServerTypes
 /DataAnalysis/bin
 /DataAnalysis/obj
+/DBModels/obj
+/DBModels/bin
