@@ -51,7 +51,6 @@ namespace DBRepertory
             SqlBulkCopy bulkCopy = new SqlBulkCopy(conn);  //用其它源的数据有效批量加载sql server表中
             bulkCopy.BulkCopyTimeout = 120;
             bulkCopy.DestinationTableName = targetTableName;  //服务器上目标表的名称
-            bulkCopy.BatchSize = sourceDataTable.Rows.Count;  //每一批次中的行数
             try
             {
                 conn.Open();

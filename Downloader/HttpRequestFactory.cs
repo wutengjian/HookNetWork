@@ -94,7 +94,7 @@ namespace Downloader
             if (string.IsNullOrEmpty(url))
                 return null;
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-            request.Timeout = 1000 * 30;//超时6秒
+            request.Timeout = 1000 * 60;//超时1分钟
             request.Method = method;
             if (method.Equals("GET", StringComparison.InvariantCultureIgnoreCase))
             {

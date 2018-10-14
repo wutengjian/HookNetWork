@@ -1,6 +1,6 @@
 ﻿using Dapper;
 using DBRepertory;
-using Models;
+using DBModels;
 using PublicUnit;
 using System;
 using System.Collections.Generic;
@@ -71,6 +71,10 @@ where not EXISTS(
                 if (Regex.IsMatch(word, "[^a-z|A-Z]+", RegexOptions.Singleline | RegexOptions.IgnoreCase))
                 {
                     DataState = -1;//出现字母以外的东西
+                    if (Regex.Replace(word, "[^a-z|A-Z]+", "", RegexOptions.IgnoreCase | RegexOptions.Singleline).Length * 100 / word.Length < 80)
+                    {
+                        continue;//英文字母量 少于80%， 不符合单词规则
+                    }
                 }
                 if (dic.ContainsKey(word + "|" + HashCode))
                 {

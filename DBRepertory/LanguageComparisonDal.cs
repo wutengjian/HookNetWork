@@ -1,5 +1,5 @@
 ﻿using Dapper;
-using Models;
+using DBModels;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -25,6 +25,7 @@ namespace DBRepertory
             SqlMapping.Add("TranslationLang", "TranslationLang");
             SqlMapping.Add("CreateTime", "CreateTime");
             SqlMapping.Add("DataState", "DataState");
+            SqlMapping.Add("WordNum", "WordNum");
             SqlServerBulkCopy.SqlBulkMapping(SqlMapping);
             SqlServerBulkCopy.ConnStr = ConnStr;
             SqlServerBulkCopy.SqlBulkCopyToServer(data, "LanguageComparison");
@@ -40,6 +41,28 @@ namespace DBRepertory
                 conn.Close();
             }
             return List;
+        }
+        /// <summary>
+        /// 跟新word单词出现的次数
+        /// </summary>
+        public void UpdateWordNum()
+        {
+            using (var conn = new SqlConnection(ConnStr))
+            {
+                conn.Open();
+                conn.Execute(@"UPDATE  T
+SET     [WordNum] = WordNumNew
+FROM    ( SELECT    T.[WordNum] ,
+                    D.WordNum AS WordNumNew
+          FROM      [dbo].[LanguageComparison] AS T WITH ( NOLOCK )
+                    INNER JOIN ( SELECT DISTINCT
+                                        SUM([AppearNum]) OVER ( PARTITION BY [Word] ) AS [WordNum] ,
+                                        [Word]
+                                 FROM   [dbo].[ArticleWordDivision] WITH ( NOLOCK )
+                               ) AS D ON T.[OriginalText] = D.[Word]
+        ) AS T", commandTimeout: 300);
+                conn.Close();
+            }
         }
     }
 }

@@ -20,6 +20,10 @@ namespace PublicUnit
                 return Regex.Match(input, pattern, RegexOptions.IgnoreCase | RegexOptions.Singleline).Groups[key].Value;
             }
         }
+        public static bool RegexIsMatch(this string input, string pattern)
+        {
+            return Regex.IsMatch(input, pattern, RegexOptions.IgnoreCase | RegexOptions.Singleline);
+        }
         public static string HtmlReplace(this string info)
         {
             info = Regex.Replace(info, "(<[^<>]*>|&nbsp;)", " ", RegexOptions.IgnoreCase | RegexOptions.Singleline);

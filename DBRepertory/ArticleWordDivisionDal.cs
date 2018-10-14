@@ -1,5 +1,5 @@
 ﻿using Dapper;
-using Models;
+using DBModels;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -48,11 +48,18 @@ namespace DBRepertory
             using (var conn = new SqlConnection(ConnStr))
             {
                 conn.Open();
-                List = conn.Query<string>(@"SELECT Word FROM(
-	SELECT DISTINCT Word,SUM(AppearNum) OVER(PARTITION BY Word) AS RowSum 
-	FROM [dbo].[ArticleWordDivision] WITH(NOLOCK) 
-	WHERE DataState=1) AS T 
-			WHERE NOT EXISTS(SELECT TOP 1 1  FROM [dbo].[LanguageComparison] AS LC WITH(NOLOCK) WHERE LC.OriginalText=T.Word)
+                List = conn.Query<string>(@"SELECT  Word
+FROM    ( SELECT    Word ,
+                    SUM(AppearNum) OVER ( PARTITION BY Word ) AS RowSum ,
+                    ROW_NUMBER() OVER ( PARTITION BY Word ORDER BY Word ) AS RowIndex
+          FROM      [dbo].[ArticleWordDivision] WITH ( NOLOCK )
+          WHERE     DataState = 1
+        ) AS T
+WHERE   T.RowIndex = 1
+        AND NOT EXISTS ( SELECT TOP 1
+                                1
+                         FROM   [dbo].[LanguageComparison] AS LC WITH ( NOLOCK )
+                         WHERE  LC.OriginalText = T.Word )
 ORDER BY RowSum DESC", commandTimeout: 300).ToList();
                 conn.Close();
             }

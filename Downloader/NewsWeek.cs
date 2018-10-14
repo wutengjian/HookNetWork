@@ -1,5 +1,5 @@
 ﻿using DBRepertory;
-using Models;
+using DBModels;
 using PublicUnit;
 using System;
 using System.Collections.Generic;
@@ -102,7 +102,7 @@ namespace Downloader
                     {
                         break;
                     }
-                    Console.WriteLine("NewsWeek  =》DownloadList：" + maxPage+" @" + DateTime.Now.ToString("HH:mm:ss:fff"));
+                    Console.WriteLine("NewsWeek  =》DownloadList：" + maxPage + " @" + DateTime.Now.ToString("HH:mm:ss:fff"));
                     Thread.Sleep(1000 * 30);
                     url = RootUrl + page;
                     httpContent = httpFactory.http(url, "GET", _headers, null, Encoding.UTF8, null).Replace("&gt;", " ");
@@ -134,6 +134,8 @@ namespace Downloader
         {
             Console.WriteLine("Downloader =》NewsWeek>解析 @" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:fff"));
             List<ArticleInfo> ArticleList = new List<ArticleInfo>();
+            ArticleDal dal = new ArticleDal();
+            int num = 0;
             DirectoryInfo folder = new DirectoryInfo(RootAddress);
             foreach (FileInfo file in folder.GetFiles("*.html"))
             {
@@ -175,8 +177,13 @@ namespace Downloader
                     DataSourceLink = DataSourceLink,
                     ArticleTime = ArticleTime
                 });
+                num++;
+                if (ArticleList.Count % 1000 == 0)
+                {
+                    dal.SaveList(ArticleList);
+                    ArticleList = new List<ArticleInfo>();
+                }
             }
-            ArticleDal dal = new ArticleDal();
             dal.SaveList(ArticleList);
         }
     }

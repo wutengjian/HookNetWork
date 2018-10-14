@@ -53,13 +53,13 @@
     <Compile Include="SqlServerBulkCopy.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Models\Models.csproj">
-      <Project>{a2038ae9-c3c0-4ac5-a1ee-f61840b652be}</Project>
-      <Name>Models</Name>
-    </ProjectReference>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <ProjectReference Include="..\DBModels\DBModels.csproj">
+      <Project>{fb95b1a8-4ae6-4241-9a55-337978714b2a}</Project>
+      <Name>DBModels</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

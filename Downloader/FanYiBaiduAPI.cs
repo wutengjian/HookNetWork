@@ -1,5 +1,5 @@
 ﻿using DBRepertory;
-using Models;
+using DBModels;
 using PublicUnit;
 using System;
 using System.Collections.Generic;
@@ -95,11 +95,13 @@ namespace Downloader
                     OriginalLang = from,
                     OriginalText = src,
                     Translation = dst,
-                    TranslationLang = to
+                    TranslationLang = to,
+                    WordNum = 0
                 });
             }
             LanguageComparisonDal dal = new LanguageComparisonDal();
             dal.SaveList(list);
+            dal.UpdateWordNum();
         }
         public List<string> GetWordExists()
         {

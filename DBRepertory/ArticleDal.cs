@@ -1,7 +1,8 @@
 ﻿using Dapper;
-using Models;
+using DBModels;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
@@ -30,6 +31,19 @@ namespace DBRepertory
             SqlServerBulkCopy.SqlBulkMapping(SqlMapping);
             SqlServerBulkCopy.ConnStr = ConnStr;
             SqlServerBulkCopy.SqlBulkCopyToServer(data, "Article");
+        }
+        public void InsertBulk(List<ArticleInfo> ArticleList)
+        {
+            List<string> HashList = GetHashlist();
+            ArticleList = ArticleList.Where(x => HashList.Contains(x.HashCode) == false).ToList();
+            using (var conn = new SqlConnection(ConnStr))
+            {
+                conn.Open();
+                string sql = string.Format(@"INSERT INTO [dbo].[Article] ([HashCode] ,[CreateTime] ,[DataTitle] ,[DataContent] ,[DataType] ,[KeyWordSort] ,[DataSource] ,[DataSourceLink] ,[ArticleTime])
+					 VALUES (@HashCode ,@CreateTime ,@DataTitle ,@DataContent ,@DataType ,@KeyWordSort ,@DataSource ,@DataSourceLink ,@ArticleTime ) ");
+                conn.Execute(sql, ArticleList, commandTimeout: 60);
+                conn.Close();
+            }
         }
         public List<ArticleInfo> Getlist()
         {
