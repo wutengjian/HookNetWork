@@ -29,11 +29,50 @@ namespace Downloader
         private void Run()
         {
             Console.WriteLine("Downloader =》Run @" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:fff"));
-            new FanYiBaiduAPI().Run();
-            new GlobalTimes().Run();
-            new NewsWeek().Run();
-            new NewsUN().Run();
-            new TingRoomNovel().Run();
+            try
+            {
+                new FanYiBaiduAPI().Run();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("FanYiBaiduAPI @" + ex.Message);
+            }
+
+            try
+            {
+                new GlobalTimes().Run();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("GlobalTimes @" + ex.Message);
+            }
+
+            try
+            {
+                new NewsWeek().Run();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("NewsWeek @" + ex.Message);
+            }
+
+            try
+            {
+                new NewsUN().Run();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("NewsUN @" + ex.Message);
+            }
+
+            try
+            {
+                new TingRoomNovel().Run();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("TingRoomNovel @" + ex.Message);
+            }
         }
     }
 }

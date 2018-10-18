@@ -30,7 +30,15 @@ namespace DataAnalysis
         private void Run()
         {
             Console.WriteLine("DataAnalysis>Run @" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:fff"));
-            new WordDivision().Run();
+            try
+            {
+                new WordDivision().Run();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("WordDivision @" + ex.Message);
+            }
+
         }
     }
 }

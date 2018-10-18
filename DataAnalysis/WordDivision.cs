@@ -49,6 +49,8 @@ where not EXISTS(
             });
             ArticleWordDivisionDal dal = new ArticleWordDivisionDal();
             dal.SaveList(dic.Values.ToList());
+            LanguageComparisonDal LCdal = new LanguageComparisonDal();
+            LCdal.UpdateWordNum();//更新单词出现次数
         }
         public void SplitSentence(string HashCode, string Content, string DataType)
         {
@@ -75,6 +77,10 @@ where not EXISTS(
                     {
                         continue;//英文字母量 少于80%， 不符合单词规则
                     }
+                }
+                if (string.IsNullOrEmpty(word))
+                {
+                    continue;
                 }
                 if (dic.ContainsKey(word + "|" + HashCode))
                 {

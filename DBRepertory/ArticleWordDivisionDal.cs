@@ -14,7 +14,11 @@ namespace DBRepertory
         string ConnStr = "Data Source=DESKTOP-WUTENGJ;Initial Catalog=HookNetWork;Persist Security Info=True;User ID=sa;Password=wutengjian123";
         public void SaveList(List<ArticleWordDivisionInfo> DataList)
         {
-            DataList = DataList.Where(x => x.Word.Length < 50).ToList();
+            DataList = DataList.Where(x => x.Word.Length < 25).ToList();
+            if (DataList == null || DataList.Count < 1)
+            {
+                return;
+            }
             Dictionary<string, string> SqlMapping = new Dictionary<string, string>();
             SqlMapping.Add("Word", "Word");
             SqlMapping.Add("HashCode", "HashCode");
@@ -24,13 +28,13 @@ namespace DBRepertory
             SqlMapping.Add("DataState", "DataState");
             SqlServerBulkCopy.SqlBulkMapping(SqlMapping);
             SqlServerBulkCopy.ConnStr = ConnStr;
-            if (DataList.Count > 10000)
+            if (DataList.Count > 1000)
             {
-                int num = DataList.Count / 10000;
+                int num = DataList.Count / 1000;
                 num = DataList.Count % 10000 > 0 ? num + 1 : num;
                 for (int i = 0; i < num; i++)
                 {
-                    var list = DataList.Skip(i * 10000).Take(10000).ToList();
+                    var list = DataList.Skip(i * 1000).Take(1000).ToList();
                     var data = SqlServerBulkCopy.ToDataTable<ArticleWordDivisionInfo>(list);
                     SqlServerBulkCopy.SqlBulkCopyToServer(data, "ArticleWordDivision");
                 }

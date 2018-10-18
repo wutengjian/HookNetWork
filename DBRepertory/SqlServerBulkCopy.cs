@@ -60,7 +60,7 @@ namespace DBRepertory
                     {
                         bulkCopy.ColumnMappings.Add(key, mapping[key]);
                     }
-                    bulkCopy.BatchSize = 10000;
+                    //bulkCopy.BatchSize = 10000;
                     //将提供的数据源中的所有行复制到目标表中
                     bulkCopy.WriteToServer(sourceDataTable);
                 }
