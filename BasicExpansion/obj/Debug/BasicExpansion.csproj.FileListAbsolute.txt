@@ -1,5 +1,0 @@
-E:\HookNetWork\BasicExpansion\bin\Debug\BasicExpansion.dll
-E:\HookNetWork\BasicExpansion\bin\Debug\BasicExpansion.pdb
-E:\HookNetWork\BasicExpansion\obj\Debug\BasicExpansion.csproj.CoreCompileInputs.cache
-E:\HookNetWork\BasicExpansion\obj\Debug\BasicExpansion.dll
-E:\HookNetWork\BasicExpansion\obj\Debug\BasicExpansion.pdb

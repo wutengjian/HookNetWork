@@ -1,5 +1,0 @@
-E:\HookNetWork\BasicToolKit\bin\Debug\BasicToolKit.dll
-E:\HookNetWork\BasicToolKit\bin\Debug\BasicToolKit.pdb
-E:\HookNetWork\BasicToolKit\obj\Debug\BasicToolKit.csproj.CoreCompileInputs.cache
-E:\HookNetWork\BasicToolKit\obj\Debug\BasicToolKit.dll
-E:\HookNetWork\BasicToolKit\obj\Debug\BasicToolKit.pdb
