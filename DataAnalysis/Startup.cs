@@ -38,7 +38,6 @@ namespace DataAnalysis
             {
                 Console.WriteLine("WordDivision @" + ex.Message);
             }
-
         }
     }
 }

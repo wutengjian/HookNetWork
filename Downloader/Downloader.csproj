@@ -99,6 +99,14 @@
     <Content Include="SqlServerTypes\readme.htm" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\BasicExpansion\BasicExpansion.csproj">
+      <Project>{aa68907f-9b20-4479-b48c-3e5e16cfe3f3}</Project>
+      <Name>BasicExpansion</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BasicToolKit\BasicToolKit.csproj">
+      <Project>{450acba0-a2ee-4af0-a3be-bfab2ab433ee}</Project>
+      <Name>BasicToolKit</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DBModels\DBModels.csproj">
       <Project>{fb95b1a8-4ae6-4241-9a55-337978714b2a}</Project>
       <Name>DBModels</Name>
@@ -106,10 +114,6 @@
     <ProjectReference Include="..\DBRepertory\DBRepertory.csproj">
       <Project>{7a9da09d-2f8f-4021-af39-a3f0a2da3754}</Project>
       <Name>DBRepertory</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\PublicUnit\PublicUnit.csproj">
-      <Project>{370ede4d-75a8-4c2f-a277-73b0bbb75655}</Project>
-      <Name>PublicUnit</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
