@@ -13,6 +13,10 @@ namespace BasicExpansion
     {
         public static void SavaFile(string RootAddress, string FileName, string Content)
         {
+            if (string.IsNullOrEmpty(Content))
+            {
+                return;
+            }
             //判断路径是否存在,不存在就创建
             if (!Directory.Exists(RootAddress))
                 Directory.CreateDirectory(RootAddress);

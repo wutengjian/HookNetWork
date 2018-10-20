@@ -55,6 +55,14 @@ namespace BasicExpansion
                 {
                     //reader["PersonName"];
                     //reader[1]; 通过数字索引或字符串索引访问
+                    //reader.IsDBNull(1);      //是否是null值
+                    //reader.GetString(1);     //Get什么类型就返回什么类型，这没啥好说的。
+                }
+                //reader.GetName(1);               //PersonName 由数字获得列名
+                //reader.GetOrdinal("PersonName"); //1 由列名获取其在reader中的数字索引
+                if (reader.NextResult())
+                {
+                    //reader.GetString(1);
                 }
             }
             SqliteConn.Close();

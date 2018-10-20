@@ -89,7 +89,7 @@ namespace Downloader
                 {
                     break;
                 }
-                Console.WriteLine("GlobalTimes =》DownloadList：" + maxPage+" @" + DateTime.Now.ToString("HH:mm:ss:fff"));
+                Console.WriteLine("GlobalTimes =》DownloadList：" + maxPage + " @" + DateTime.Now.ToString("HH:mm:ss:fff"));
                 url = listurl + page;
                 httpContent = httpFactory.http(url, "GET", null, null, Encoding.UTF8, null).Replace("&gt;", " ");
             } while (true);
@@ -108,6 +108,7 @@ namespace Downloader
             Console.WriteLine("Downloader =》GlobalTimes>解析 @" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:fff"));
             List<ArticleInfo> ArticleList = new List<ArticleInfo>();
             DirectoryInfo folder = new DirectoryInfo(RootAddress);
+            int Num = 0;
             foreach (FileInfo file in folder.GetFiles("*.html"))
             {
                 string FileContent = File.ReadAllText(file.FullName);
@@ -142,6 +143,12 @@ namespace Downloader
                     DataSourceLink = DataSourceLink,
                     ArticleTime = ArticleTime
                 });
+                Num++;
+                if (Num > 100)
+                {
+                    Num = 0;
+                    Thread.Sleep(1000 * 3);
+                }
             }
             ArticleDal dal = new ArticleDal();
             dal.SaveList(ArticleList);

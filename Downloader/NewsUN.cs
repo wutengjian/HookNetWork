@@ -140,6 +140,7 @@ namespace Downloader
             Console.WriteLine("Downloader =》NewsUN>解析 @" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:fff"));
             List<ArticleInfo> ArticleList = new List<ArticleInfo>();
             DirectoryInfo folder = new DirectoryInfo(RootAddress);
+            int Num = 0;
             foreach (FileInfo file in folder.GetFiles("*.html"))
             {
                 string FileContent = File.ReadAllText(file.FullName);
@@ -176,6 +177,12 @@ namespace Downloader
                     DataSourceLink = DataSourceLink,
                     ArticleTime = ArticleTime
                 });
+                 Num++;
+                if (Num > 100)
+                {
+                    Num = 0;
+                    Thread.Sleep(1000 * 3);
+                }
             }
             ArticleDal dal = new ArticleDal();
             dal.SaveList(ArticleList);

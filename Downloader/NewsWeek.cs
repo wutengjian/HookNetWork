@@ -182,6 +182,7 @@ namespace Downloader
                 {
                     dal.SaveList(ArticleList);
                     ArticleList = new List<ArticleInfo>();
+                    Thread.Sleep(1000*3);
                 }
             }
             dal.SaveList(ArticleList);

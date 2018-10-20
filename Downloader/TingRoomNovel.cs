@@ -193,6 +193,7 @@ namespace Downloader
                 num++;
                 if (ArticleList.Count % 100 == 0)
                 {
+                    Thread.Sleep(1000 * 3);
                     dal.InsertBulk(ArticleList);
                     ArticleList = new List<ArticleInfo>();
                 }

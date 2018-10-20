@@ -36,8 +36,8 @@ namespace Downloader
         }
         public void Run()
         {
-            Download();
             ExtractDetails();
+            Download();
         }
         public void Download()
         {
@@ -65,8 +65,9 @@ namespace Downloader
                 parm.AppendFormat("&salt={0}", salt);
                 parm.AppendFormat("&sign={0}", FileHelper.MD5Encrypt32(appid + q + salt + key).ToLower());
                 string httpContent = httpFactory.http(RootUrl + parm.ToString(), "GET", null, null, Encoding.UTF8, null);
-                Thread.Sleep(100);
+                Thread.Sleep(500);
                 FileHelper.SavaFile(RootAddress, word + ".txt", httpContent);
+                Console.WriteLine("FanYiBaiduAPI》Download：" + word);
             }
             Console.WriteLine("Downloader =》FanYiBaiduAPI>下载完成 @" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:fff"));
         }
@@ -75,6 +76,7 @@ namespace Downloader
             Console.WriteLine("Downloader =》FanYiBaiduAPI>解析 @" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:fff"));
             DirectoryInfo folder = new DirectoryInfo(RootAddress);
             List<LanguageComparisonInfo> list = new List<LanguageComparisonInfo>();
+            int Num = 0;
             foreach (FileInfo file in folder.GetFiles("*.txt"))
             {
                 string FileContent = File.ReadAllText(file.FullName);
@@ -98,6 +100,12 @@ namespace Downloader
                     TranslationLang = to,
                     WordNum = 0
                 });
+                Num++;
+                if (Num > 100)
+                {
+                    Num = 0;
+                    Thread.Sleep(1000 * 3);
+                }
             }
             LanguageComparisonDal dal = new LanguageComparisonDal();
             dal.SaveList(list);
