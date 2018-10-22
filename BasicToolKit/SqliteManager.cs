@@ -14,7 +14,7 @@ namespace BasicToolKit
         public static SQLiteConnection GetSQLite(string _dbPath, string _dbName)
         {
             string connStr = "Data Source=" + _dbPath + _dbName + ".db;Initial Catalog=sqlite;Integrated Security=True;Max Pool Size=10";
-            SQLiteConnection Sqlite = new SQLiteConnection(_dbPath);
+            SQLiteConnection Sqlite = GetSQLite(connStr);
             if (SqliteDic == null)
             {
                 SqliteDic = new Dictionary<string, SQLiteConnection>();
@@ -23,6 +23,11 @@ namespace BasicToolKit
             {
                 SqliteDic.Add(_dbName, Sqlite);
             }
+            return Sqlite;
+        }
+        public static SQLiteConnection GetSQLite(string connStr)
+        {
+            SQLiteConnection Sqlite = new SQLiteConnection(connStr);
             return Sqlite;
         }
     }

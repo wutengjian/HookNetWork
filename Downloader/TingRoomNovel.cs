@@ -42,6 +42,7 @@ namespace Downloader
         }
         public void Run()
         {
+            ExtractDetails();
             Download();
             ExtractDetails();
         }
@@ -138,11 +139,16 @@ namespace Downloader
             Console.WriteLine("Downloader =》TingRoomNovel>解析 @" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:fff"));
             List<ArticleInfo> ArticleList = new List<ArticleInfo>();
             ArticleDal dal = new ArticleDal();
+            List<ArticleFileInfo> ListSQLite = new List<ArticleFileInfo>();
+            ArticleFileSQLite SQLitedal = new ArticleFileSQLite();
+            var _AFMList = SQLitedal.GetList("TingRoomNovel");
+            SQLitedal.AFMList = _AFMList;
             DirectoryInfo folder = new DirectoryInfo(RootAddress);
             int num = 0;
             foreach (FileInfo file in folder.GetFiles("*.txt"))
             {
                 string FileContent = File.ReadAllText(file.FullName);
+                string fileDate = file.CreationTimeUtc.ToString("yyyy-MM-dd");
                 string DataTitle = FileContent.RegexMatch("<Mytitle>(?<info>[^<>]*)</Mytitle>", "info");
                 string KeyWordSort = FileContent.RegexMatch("<KeyWordSort>(?<info>[^<>]*)</KeyWordSort>", "info");
                 string DataSourceLink = FileContent.RegexMatch("<MyUrl>(?<info>[^<>]*)</MyUrl>", "info");
@@ -190,12 +196,22 @@ namespace Downloader
                     DataSourceLink = DataSourceLink,
                     ArticleTime = DateTime.Now
                 });
+                ListSQLite.Add(new ArticleFileInfo()
+                {
+                    HashCode = HashCode,
+                    HttpUrl = DataSourceLink,
+                    FileName = file.FullName,
+                    DataSource = DataSource,
+                    DataTime = Convert.ToDateTime(fileDate)
+                });
                 num++;
                 if (ArticleList.Count % 100 == 0)
                 {
                     Thread.Sleep(1000 * 3);
-                    dal.InsertBulk(ArticleList);
+                    dal.SaveList(ArticleList);
+                    SQLitedal.SaveList(ListSQLite);
                     ArticleList = new List<ArticleInfo>();
+                    ListSQLite = new List<ArticleFileInfo>();
                 }
             }
             dal.InsertBulk(ArticleList);

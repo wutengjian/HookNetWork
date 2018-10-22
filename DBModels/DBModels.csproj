@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ArticleFileInfo.cs" />
     <Compile Include="ArticleInfo.cs" />
     <Compile Include="ArticleWordDivisionInfo.cs" />
     <Compile Include="LanguageComparisonInfo.cs" />

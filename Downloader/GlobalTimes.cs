@@ -43,6 +43,7 @@ namespace Downloader
         }
         public void Run()
         {
+            ExtractDetails();
             Download();
             ExtractDetails();
         }
@@ -107,11 +108,17 @@ namespace Downloader
         {
             Console.WriteLine("Downloader =》GlobalTimes>解析 @" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:fff"));
             List<ArticleInfo> ArticleList = new List<ArticleInfo>();
+            ArticleDal dal = new ArticleDal();
+            List<ArticleFileInfo> ListSQLite = new List<ArticleFileInfo>();
+            ArticleFileSQLite SQLitedal = new ArticleFileSQLite();
+            var _AFMList = SQLitedal.GetList("GlobalTimes");
+            SQLitedal.AFMList = _AFMList;
             DirectoryInfo folder = new DirectoryInfo(RootAddress);
             int Num = 0;
             foreach (FileInfo file in folder.GetFiles("*.html"))
             {
                 string FileContent = File.ReadAllText(file.FullName);
+                string fileDate = file.CreationTimeUtc.ToString("yyyy-MM-dd");
                 string DataTitle = Regex.Match(FileContent, "<Mytitle>(?<info>[^<>]*)</Mytitle>", RegexOptions.IgnoreCase | RegexOptions.Singleline).Groups["info"].Value;
                 string KeyWordSort = Regex.Match(FileContent, "<KeyWordSort>(?<info>[^<>]*)</KeyWordSort>", RegexOptions.IgnoreCase | RegexOptions.Singleline).Groups["info"].Value;
                 string DataSourceLink = Regex.Match(FileContent, "<meta name=\"twitter:url\" content=\"(?<info>[^<>\"]*)", RegexOptions.IgnoreCase | RegexOptions.Singleline).Groups["info"].Value;
@@ -143,14 +150,25 @@ namespace Downloader
                     DataSourceLink = DataSourceLink,
                     ArticleTime = ArticleTime
                 });
-                Num++;
-                if (Num > 100)
+                ListSQLite.Add(new ArticleFileInfo()
                 {
+                    HashCode = HashCode,
+                    HttpUrl = DataSourceLink,
+                    FileName = file.FullName,
+                    DataSource = DataSource,
+                    DataTime = Convert.ToDateTime(fileDate)
+                });
+                Num++;
+                if (Num > 1000)
+                {
+                    dal.SaveList(ArticleList);
+                    SQLitedal.SaveList(ListSQLite);
+                    ArticleList = new List<ArticleInfo>();
+                    ListSQLite = new List<ArticleFileInfo>();
                     Num = 0;
                     Thread.Sleep(1000 * 3);
                 }
             }
-            ArticleDal dal = new ArticleDal();
             dal.SaveList(ArticleList);
         }
     }

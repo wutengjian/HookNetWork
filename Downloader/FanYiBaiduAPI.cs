@@ -76,6 +76,7 @@ namespace Downloader
             Console.WriteLine("Downloader =》FanYiBaiduAPI>解析 @" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:fff"));
             DirectoryInfo folder = new DirectoryInfo(RootAddress);
             List<LanguageComparisonInfo> list = new List<LanguageComparisonInfo>();
+
             int Num = 0;
             foreach (FileInfo file in folder.GetFiles("*.txt"))
             {
@@ -101,7 +102,7 @@ namespace Downloader
                     WordNum = 0
                 });
                 Num++;
-                if (Num > 100)
+                if (Num > 1000)
                 {
                     Num = 0;
                     Thread.Sleep(1000 * 3);

@@ -19,7 +19,35 @@ namespace BasicExpansion
         /// <param name="IsCover">是否覆盖:默认不覆盖</param>
         public static void CreateTable(this SQLiteConnection SqliteConn, string TableName, Dictionary<string, string> ColDic, bool IsCover = false)
         {
-            string sqlStr = string.Format("");
+            StringBuilder str = new StringBuilder("create table if not exists " + TableName + " (");
+            string sqlStr = string.Empty;
+            foreach (string key in ColDic.Keys)
+            {
+                str.Append(key + " " + ColDic[key] + ",");
+            }
+            sqlStr = str.ToString().TrimEnd(',') + ");";
+            if (IsCover)
+            {
+                SqliteConn.DropTable(TableName);
+            }
+            SqliteConn.Open();
+            SQLiteCommand cmd = new SQLiteCommand(sqlStr, SqliteConn);
+            cmd.ExecuteNonQuery();
+            SqliteConn.Close();
+        }
+        public static void DropTable(this SQLiteConnection SqliteConn, string TableName)
+        {
+            StringBuilder str = new StringBuilder();
+            string sqlStr = "drop table if exists " + TableName + " ;";
+            SqliteConn.Open();
+            SQLiteCommand cmd = new SQLiteCommand(sqlStr, SqliteConn);
+            cmd.ExecuteNonQuery();
+            SqliteConn.Close();
+        }
+        public static void TruncateTable(this SQLiteConnection SqliteConn, string TableName)
+        {
+            StringBuilder str = new StringBuilder();
+            string sqlStr = "DELETE FROM sqlite_sequence WHERE name = '" + TableName + "'; ";
             SqliteConn.Open();
             SQLiteCommand cmd = new SQLiteCommand(sqlStr, SqliteConn);
             cmd.ExecuteNonQuery();

@@ -45,6 +45,7 @@ namespace Downloader
         }
         public void Run()
         {
+            ExtractDetails();
             Download();
             ExtractDetails();
         }
@@ -135,11 +136,17 @@ namespace Downloader
             Console.WriteLine("Downloader =》NewsWeek>解析 @" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:fff"));
             List<ArticleInfo> ArticleList = new List<ArticleInfo>();
             ArticleDal dal = new ArticleDal();
+            List<ArticleFileInfo> ListSQLite = new List<ArticleFileInfo>();
+            ArticleFileSQLite SQLitedal = new ArticleFileSQLite();
+            var _AFMList = SQLitedal.GetList("NewsWeek");
+            SQLitedal.AFMList = _AFMList;
             int num = 0;
             DirectoryInfo folder = new DirectoryInfo(RootAddress);
             foreach (FileInfo file in folder.GetFiles("*.html"))
             {
                 string FileContent = File.ReadAllText(file.FullName);
+                string fileDate = file.CreationTimeUtc.ToString("yyyy-MM-dd");
+                string DataContext = FileContent.Clone().ToString();
                 string DataTitle = Regex.Match(FileContent, "<Mytitle>(?<info>[^<>]*)</Mytitle>", RegexOptions.IgnoreCase | RegexOptions.Singleline).Groups["info"].Value;
                 string KeyWordSort = Regex.Match(FileContent, "<KeyWordSort>(?<info>[^<>]*)</KeyWordSort>", RegexOptions.IgnoreCase | RegexOptions.Singleline).Groups["info"].Value;
                 string DataSourceLink = Regex.Match(FileContent, "<MyUrl>(?<info>[^<>]*)</MyUrl>", RegexOptions.IgnoreCase | RegexOptions.Singleline).Groups["info"].Value;
@@ -177,15 +184,26 @@ namespace Downloader
                     DataSourceLink = DataSourceLink,
                     ArticleTime = ArticleTime
                 });
+                ListSQLite.Add(new ArticleFileInfo()
+                {
+                    HashCode = HashCode,
+                    HttpUrl = DataSourceLink,
+                    FileName = file.FullName,
+                    DataSource = DataSource,
+                    DataTime = Convert.ToDateTime(fileDate)
+                });
                 num++;
                 if (ArticleList.Count % 1000 == 0)
                 {
                     dal.SaveList(ArticleList);
+                    SQLitedal.SaveList(ListSQLite);
                     ArticleList = new List<ArticleInfo>();
-                    Thread.Sleep(1000*3);
+                    ListSQLite = new List<ArticleFileInfo>();
+                    Thread.Sleep(1000 * 3);
                 }
             }
             dal.SaveList(ArticleList);
+            SQLitedal.SaveList(ListSQLite);
         }
     }
 }

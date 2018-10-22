@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace DataAnalysis
@@ -29,6 +30,7 @@ namespace DataAnalysis
         }
         private void Run()
         {
+            Thread.Sleep(1000 * 60 * 10);//休眠10分钟
             Console.WriteLine("DataAnalysis>Run @" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:fff"));
             try
             {
