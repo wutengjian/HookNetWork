@@ -15,13 +15,8 @@ namespace Downloader
     /// <summary>
     /// 新闻周刊
     /// </summary>
-    public class NewsWeek
+    public class NewsWeek : DownloadBase
     {
-        private string RootUrl = string.Empty;
-        private string RootAddress = string.Empty;
-        HttpRequestFactory httpFactory = null;
-        string _headers = string.Empty;
-        List<string> FileList = null;
         public NewsWeek()
         {
             RootUrl = "https://www.newsweek.com";
@@ -33,19 +28,20 @@ namespace Downloader
                         Host:www.newsweek.com 
                         If-Modified-Since:Sat, 06 Oct 2018 15:18:06 GMT 
                         User-Agent:Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.10240";
-            FileList = new List<string>();
-            DirectoryInfo folder = new DirectoryInfo(RootAddress);
-            if (folder.Exists)
-            {
-                foreach (FileInfo file in folder.GetFiles("*.html"))
-                {
-                    FileList.Add(file.FullName);
-                }
-            }
+            ArticleFileSQLite SQLitedal = new ArticleFileSQLite();
+            FileList = SQLitedal.GetFileNames("NewsWeek");
+            //DirectoryInfo folder = new DirectoryInfo(RootAddress);
+            //if (folder.Exists)
+            //{
+            //    foreach (FileInfo file in folder.GetFiles("*.html"))
+            //    {
+            //        FileList.Add(file.FullName);
+            //    }
+            //}
         }
-        public void Run()
+        public override void Run()
         {
-            ExtractDetails();
+            //ExtractDetails();
             Download();
             ExtractDetails();
         }
@@ -89,7 +85,7 @@ namespace Downloader
                         {
                             DetailsUrl = RootUrl + DetailsUrl;
                         }
-                        if (FileList.Contains(RootAddress + FileHelper.GetHttpFileName(DetailsUrl, ".html")))
+                        if (FileList != null && FileList.Contains(RootAddress + FileHelper.GetHttpFileName(DetailsUrl, ".html")))
                             continue;
                         var dic = new Dictionary<string, string>();
                         dic.Add("title", Regex.Match(info, "<a href=\"(?<url>[^<>\"]*)\">(?<title>[^<>]*)</a>", RegexOptions.IgnoreCase | RegexOptions.Singleline).Groups["title"].Value);

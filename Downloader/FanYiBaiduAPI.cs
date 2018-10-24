@@ -12,12 +12,9 @@ using System.Threading.Tasks;
 
 namespace Downloader
 {
-    public class FanYiBaiduAPI
+    public class FanYiBaiduAPI : DownloadBase
     {
-        private string RootUrl = string.Empty;
-        private string RootAddress = string.Empty;
-        HttpRequestFactory httpFactory = null;
-        List<string> FileList = null;
+        
         public FanYiBaiduAPI()
         {
             RootUrl = "http://api.fanyi.baidu.com/api/trans/vip/translate";
@@ -34,7 +31,7 @@ namespace Downloader
                 }
             }
         }
-        public void Run()
+        public override void Run()
         {
             ExtractDetails();
             Download();

@@ -66,6 +66,23 @@ namespace DBRepertory
                 return null;
             }
         }
+        public List<string> GetFileNames(string DataSource)
+        {
+            try
+            {
+                using (SQLiteDbContext dbContext = new SQLiteDbContext())
+                {
+                    //where DataSource='NewsWeek' and DataTime>strftime('%Y-%m-%d','now', '-10 day')
+                    DateTime date = DateTime.Now.AddDays(-15).Date;
+                    return dbContext.ArticleFiles.Where(x => x.DataSource == DataSource && x.DataTime > date).Select(x => x.FileName).ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("SQLite " + ex.Message);
+                return null;
+            }
+        }
         public void ArticleFiles_CreateTable()
         {
             Dictionary<string, string> ColDic = new Dictionary<string, string>();
@@ -73,7 +90,7 @@ namespace DBRepertory
             ColDic.Add("FileName", "NVARCHAR(250)");
             ColDic.Add("HttpUrl", "NVARCHAR(250)");
             ColDic.Add("DataSource", "NVARCHAR(50)");
-            ColDic.Add("DataTime", "DATE");            
+            ColDic.Add("DataTime", "DATE");
             using (SQLiteDbContext dbContext = new SQLiteDbContext())
             {
                 dbContext.CreateTable("ArticleFiles", ColDic);

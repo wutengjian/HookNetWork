@@ -12,13 +12,9 @@ using System.Threading.Tasks;
 
 namespace Downloader
 {
-    public class TingRoomNovel
+    public class TingRoomNovel : DownloadBase
     {
-        private string RootUrl = string.Empty;
-        private string RootAddress = string.Empty;
-        HttpRequestFactory httpFactory = null;
-        string _headers = string.Empty;
-        List<string> FileList = null;
+
         public TingRoomNovel()
         {
             RootUrl = "http://novel.tingroom.com";
@@ -30,17 +26,10 @@ namespace Downloader
                         Host:novel.tingroom.com 
                         If-Modified-Since:Sat, 06 Oct 2018 15:18:06 GMT 
                         User-Agent:Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.10240";
-            FileList = new List<string>();
-            DirectoryInfo folder = new DirectoryInfo(RootAddress);
-            if (folder.Exists)
-            {
-                foreach (FileInfo file in folder.GetFiles("*.txt"))
-                {
-                    FileList.Add(file.FullName);
-                }
-            }
+            ArticleFileSQLite SQLitedal = new ArticleFileSQLite();
+            FileList = SQLitedal.GetFileNames("TingRoomNovel");
         }
-        public void Run()
+        public override void Run()
         {
             ExtractDetails();
             Download();
@@ -85,7 +74,7 @@ namespace Downloader
                         {
                             DetailsUrl = RootUrl + DetailsUrl;
                         }
-                        if (FileList.Contains(RootAddress + FileHelper.GetHttpFileName(DetailsUrl, ".txt")))
+                        if (FileList!=null&&FileList.Contains(RootAddress + FileHelper.GetHttpFileName(DetailsUrl, ".txt")))
                             continue;
                         var dic = new Dictionary<string, string>();
                         dic.Add("BookName", BookName);

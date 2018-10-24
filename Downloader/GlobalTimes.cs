@@ -20,28 +20,17 @@ namespace Downloader
     /// <summary>
     /// 环球时报
     /// </summary>
-    public class GlobalTimes
+    public class GlobalTimes : DownloadBase
     {
-        private string RootUrl = string.Empty;
-        private string RootAddress = string.Empty;
-        HttpRequestFactory httpFactory = null;
-        List<string> FileList = null;
         public GlobalTimes()
         {
             RootUrl = "http://www.globaltimes.cn/";
             RootAddress = "F:\\HookNetWork\\GlobalTimes\\";
             httpFactory = new HttpRequestFactory();
-            FileList = new List<string>();
-            DirectoryInfo folder = new DirectoryInfo(RootAddress);
-            if (folder.Exists)
-            {
-                foreach (FileInfo file in folder.GetFiles("*.html"))
-                {
-                    FileList.Add(file.FullName);
-                }
-            }
+            ArticleFileSQLite SQLitedal = new ArticleFileSQLite();
+            FileList = SQLitedal.GetFileNames("GlobalTimes");
         }
-        public void Run()
+        public override void Run()
         {
             ExtractDetails();
             Download();
@@ -76,7 +65,7 @@ namespace Downloader
                 foreach (Match infoMatch in Regex.Matches(httpContent, "<div class=\"row-content\">(?<info>((?!</p|row-content).)*?</p>)", RegexOptions.IgnoreCase | RegexOptions.Singleline))
                 {
                     DetailsUrl = Regex.Match(infoMatch.Groups["info"].Value, "<a[^<>]*href=\"(?<url>[^<>\"]*)\">(?<title>[^<>]*)</a>", RegexOptions.IgnoreCase | RegexOptions.Singleline).Groups["url"].Value;
-                    if (FileList.Contains(RootAddress + FileHelper.GetHttpFileName(DetailsUrl, ".html")))
+                    if (FileList != null && FileList.Contains(RootAddress + FileHelper.GetHttpFileName(DetailsUrl, ".html")))
                         continue;
                     var dic = new Dictionary<string, string>();
                     dic.Add("title", Regex.Match(infoMatch.Groups["info"].Value, "<a[^<>]*href=\"(?<info>[^<>\"]*)\">(?<title>[^<>]*)</a>", RegexOptions.IgnoreCase | RegexOptions.Singleline).Groups["title"].Value);

@@ -73,6 +73,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DownloadBase.cs" />
     <Compile Include="FanYiBaiduAPI.cs" />
     <Compile Include="GlobalTimes.cs" />
     <Compile Include="HttpRequestFactory.cs" />

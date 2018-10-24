@@ -15,14 +15,9 @@ namespace Downloader
     /// <summary>
     /// 联合国新闻部
     /// </summary>
-    public class NewsUN
+    public class NewsUN : DownloadBase
     {
-        private string RootUrl = string.Empty;
-        private string RootAddress = string.Empty;
-        HttpRequestFactory httpFactory = null;
-        string _headers = string.Empty;
-        List<string> FileList = null;
-        public NewsUN()
+       public NewsUN()
         {
             RootUrl = "https://news.un.org";
             RootAddress = "F:\\HookNetWork\\NewsUN\\";
@@ -34,17 +29,10 @@ namespace Downloader
                          Host: news.un.org
                          If-Modified-Since: Sun, 07 Oct 2018 03:58:13 GMT
                          User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.10240";
-            FileList = new List<string>();
-            DirectoryInfo folder = new DirectoryInfo(RootAddress);
-            if (folder.Exists)
-            {
-                foreach (FileInfo file in folder.GetFiles("*.html"))
-                {
-                    FileList.Add(file.FullName);
-                }
-            }
+            ArticleFileSQLite SQLitedal = new ArticleFileSQLite();
+            FileList = SQLitedal.GetFileNames("NewsUN");
         }
-        public void Run()
+        public override void Run()
         {
             ExtractDetails();
             Download();
@@ -107,7 +95,7 @@ namespace Downloader
                     {
                         DetailsUrl = RootUrl + DetailsUrl;
                     }
-                    if (FileList.Contains(RootAddress + FileHelper.GetHttpFileName(DetailsUrl, ".html")))
+                    if (FileList!=null&&FileList.Contains(RootAddress + FileHelper.GetHttpFileName(DetailsUrl, ".html")))
                         continue;
                     var dic = new Dictionary<string, string>();
                     dic.Add("title", infoMatch.Groups["title"].Value);
