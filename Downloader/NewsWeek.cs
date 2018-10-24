@@ -41,7 +41,8 @@ namespace Downloader
         }
         public override void Run()
         {
-            //ExtractDetails();
+            ExtractDetails();
+            base.DeleteFile(RootAddress);
             Download();
             ExtractDetails();
         }

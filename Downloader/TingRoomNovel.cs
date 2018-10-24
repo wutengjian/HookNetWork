@@ -32,6 +32,7 @@ namespace Downloader
         public override void Run()
         {
             ExtractDetails();
+            base.DeleteFile(RootAddress);
             Download();
             ExtractDetails();
         }
@@ -74,7 +75,7 @@ namespace Downloader
                         {
                             DetailsUrl = RootUrl + DetailsUrl;
                         }
-                        if (FileList!=null&&FileList.Contains(RootAddress + FileHelper.GetHttpFileName(DetailsUrl, ".txt")))
+                        if (FileList != null && FileList.Contains(RootAddress + FileHelper.GetHttpFileName(DetailsUrl, ".txt")))
                             continue;
                         var dic = new Dictionary<string, string>();
                         dic.Add("BookName", BookName);
