@@ -14,7 +14,6 @@ namespace Downloader
 {
     public class FanYiBaiduAPI : DownloadBase
     {
-        
         public FanYiBaiduAPI()
         {
             RootUrl = "http://api.fanyi.baidu.com/api/trans/vip/translate";
@@ -43,7 +42,7 @@ namespace Downloader
             ArticleWordDivisionDal dal = new ArticleWordDivisionDal();
             List<string> list = dal.GetListWord();
             List<string> listOld = GetWordExists();
-            list = list.Where(x => listOld.Contains(x) == false).Take(10000).ToList();
+            list = list.Where(x => listOld.Contains(x) == false).Take(30000).ToList();
 
             string appid = "20181007000215943";
             string key = "FUECNM4FlsQI53YBvz6o";

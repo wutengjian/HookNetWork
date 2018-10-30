@@ -75,8 +75,10 @@
   <ItemGroup>
     <Compile Include="DownloadBase.cs" />
     <Compile Include="FanYiBaiduAPI.cs" />
+    <Compile Include="FanYiHuJiang.cs" />
     <Compile Include="GlobalTimes.cs" />
     <Compile Include="HttpRequestFactory.cs" />
+    <Compile Include="IYuba.cs" />
     <Compile Include="NewsUN.cs" />
     <Compile Include="NewsWeek.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

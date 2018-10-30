@@ -73,6 +73,14 @@ namespace Downloader
             {
                 Console.WriteLine("TingRoomNovel @" + ex.Message);
             }
+            try
+            {
+                new FanYiHuJiang().Run();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("FanYiHuJiang @" + ex.Message);
+            }
         }
     }
 }
