@@ -42,7 +42,8 @@ namespace Downloader
             ArticleWordDivisionDal dal = new ArticleWordDivisionDal();
             List<string> list = dal.GetListWord();
             List<string> listOld = GetWordExists();
-            list = list.Where(x => listOld.Contains(x) == false).Take(30000).ToList();
+            list = list.Where(x => listOld.Contains(x) == false).Take(300000).ToList();
+            Dictionary<string, string> ErrorDic = new Dictionary<string, string>();
 
             string appid = "20181007000215943";
             string key = "FUECNM4FlsQI53YBvz6o";
@@ -52,6 +53,7 @@ namespace Downloader
                 string q = word.Trim();
                 if (string.IsNullOrEmpty(q))
                     continue;
+                 Console.WriteLine("FanYiBaiduAPI》Download：正在下载单词：" + word);
                 string salt = random.Next(10000).ToString();
                 StringBuilder parm = new StringBuilder();
                 parm.AppendFormat("?q={0}", q);
@@ -62,7 +64,14 @@ namespace Downloader
                 parm.AppendFormat("&sign={0}", FileHelper.MD5Encrypt32(appid + q + salt + key).ToLower());
                 string httpContent = httpFactory.http(RootUrl + parm.ToString(), "GET", null, null, Encoding.UTF8, null);
                 Thread.Sleep(500);
+                string error_code = httpContent.RegexMatch("\"error_code\":[\"]*(?<info>[^<>\":,]*)[\"]*", "info");
+                string error_msg = httpContent.RegexMatch("\"error_msg\":[\"]*(?<info>[^<>\":,]*)[\"]*", "info");
+                if (string.IsNullOrEmpty(error_code) == false)
+                {
+                    ErrorDic.Add(word, error_code + "," + error_msg);
+                }
                 FileHelper.SavaFile(RootAddress, word + ".txt", httpContent);
+
                 Console.WriteLine("FanYiBaiduAPI》Download：" + word);
             }
             Console.WriteLine("Downloader =》FanYiBaiduAPI>下载完成 @" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:fff"));
@@ -119,6 +128,7 @@ namespace Downloader
                 if (string.IsNullOrEmpty(error_code) == false)
                 {
                     filename = file.Name.Replace(".txt", "").Replace("@", "");
+                    filename = FileHelper.FileNameReplace(filename);
                     list.Add(filename);
                     continue;
                 }

@@ -21,6 +21,7 @@ namespace BasicExpansion
             if (!Directory.Exists(RootAddress))
                 Directory.CreateDirectory(RootAddress);
             String FilePath = RootAddress + FileName;
+            FilePath = FileNameReplace(FilePath);
             StreamWriter file = null;
             try
             {
@@ -42,6 +43,10 @@ namespace BasicExpansion
             }
 
 
+        }
+        public static string FileNameReplace(string filename)
+        {
+            return Regex.Replace(filename, "(\\/|\\||\\?|\\&)+", "", RegexOptions.IgnoreCase | RegexOptions.Singleline);
         }
         public static string GetHttpFileName(string url, string FileType)
         {

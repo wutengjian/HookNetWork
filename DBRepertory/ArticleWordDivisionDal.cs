@@ -52,19 +52,20 @@ namespace DBRepertory
             using (var conn = new SqlConnection(ConnStr))
             {
                 conn.Open();
-                List = conn.Query<string>(@" SELECT Word
- FROM   ( SELECT   DISTINCT Word ,
+                List = conn.Query<string>(@"SELECT  Word
+FROM    ( SELECT   DISTINCT
+                    Word ,
                     SUM(AppearNum) OVER ( PARTITION BY Word ) AS RowSum ,
                     DataState
-          FROM      [dbo].[ArticleWordDivision] WITH ( NOLOCK )
+          FROM      [dbo].[ArticleWordDivision] AS T WITH ( NOLOCK )
+          WHERE     NOT EXISTS ( SELECT TOP 1
+                                        1
+                                 FROM   [dbo].[LanguageComparison] AS LC WITH ( NOLOCK )
+                                 WHERE  LC.OriginalText = T.Word )
+                    AND LEN(T.Word) > 1
+                    AND DataState = 1
         ) AS T
- WHERE  DataState = 1
-        AND LEN(T.Word) > 1
-        AND NOT EXISTS ( SELECT TOP 1
-                                1
-                         FROM   [dbo].[LanguageComparison] AS LC WITH ( NOLOCK )
-                         WHERE  LC.OriginalText = T.Word )
- ORDER BY RowSum DESC ", commandTimeout: 300).ToList();
+ORDER BY RowSum DESC;", commandTimeout: 300).ToList();
                 conn.Close();
             }
             return List;
