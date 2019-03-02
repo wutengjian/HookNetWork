@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Downloader
 {
-    public abstract class DownloadBase
+    public abstract class DownloadBase : IDownload
     {
         public string RootUrl = string.Empty;
         public string RootAddress = string.Empty;
@@ -25,10 +25,11 @@ namespace Downloader
             //    }
             //}
         }
+        public abstract void Init();
         public abstract void Run();
         public virtual void DeleteFile(string srcPath)
         {
-            if (DateTime.Now.DayOfWeek == DayOfWeek.Sunday)
+            if (DateTime.Now.DayOfWeek == DayOfWeek.Saturday)
             {
                 try
                 {
@@ -52,7 +53,6 @@ namespace Downloader
                     throw;
                 }
             }
-
         }
     }
 }

@@ -64,7 +64,7 @@ FROM    ( SELECT   DISTINCT
                                  WHERE  LC.OriginalText = T.Word )
                     AND LEN(T.Word) > 1
                     AND DataState = 1
-        ) AS T
+        ) AS T WHERE T.RowSum>10
 ORDER BY RowSum DESC;", commandTimeout: 300).ToList();
                 conn.Close();
             }

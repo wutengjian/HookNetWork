@@ -29,57 +29,28 @@ namespace Downloader
         private void Run()
         {
             Console.WriteLine("Downloader =》Run @" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:fff"));
-            try
+            Dictionary<string, IDownload> dic = new Dictionary<string, IDownload>();
+            dic.Add("GlobalTimes", new EnglishDownload.GlobalTimes());
+            dic.Add("NewsWeek", new EnglishDownload.NewsWeek());
+            dic.Add("NewsUN", new EnglishDownload.NewsUN());
+            dic.Add("TingRoomNovel", new EnglishDownload.TingRoomNovel());
+            dic.Add("FanYiHuJiang", new EnglishDownload.FanYiHuJiang());
+            dic.Add("FanYiBaiduAPI", new EnglishDownload.FanYiBaiduAPI());
+            foreach (string key in dic.Keys)
             {
-                new FanYiBaiduAPI().Run();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("FanYiBaiduAPI @" + ex.Message);
-            }
+                try
+                {
+                    dic[key].Init();
+                    dic[key].Run();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(key + " Downloader 异常" + ex.Message);
+                }
+                finally
+                {
 
-            try
-            {
-                new GlobalTimes().Run();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("GlobalTimes @" + ex.Message);
-            }
-
-            try
-            {
-                new NewsWeek().Run();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("NewsWeek @" + ex.Message);
-            }
-
-            try
-            {
-                new NewsUN().Run();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("NewsUN @" + ex.Message);
-            }
-
-            try
-            {
-                new TingRoomNovel().Run();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("TingRoomNovel @" + ex.Message);
-            }
-            try
-            {
-                new FanYiHuJiang().Run();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("FanYiHuJiang @" + ex.Message);
+                }
             }
         }
     }
