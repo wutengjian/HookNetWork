@@ -11,7 +11,7 @@ namespace DBRepertory
 {
     public class LanguageComparisonDal
     {
-        string ConnStr = "Data Source=DESKTOP-WUTENGJ;Initial Catalog=HookNetWork;Persist Security Info=True;User ID=sa;Password=wutengjian123";
+        string ConnStr = "Data Source=JiannyWu;Initial Catalog=HookNetWork;Persist Security Info=True;User ID=sa;Password=wutengjian123";
         public void SaveList(List<LanguageComparisonInfo> list)
         {
             List<string> HashList = GetWordlist();

@@ -11,7 +11,7 @@ namespace DBRepertory
 {
     public class ArticleWordDivisionDal
     {
-        string ConnStr = "Data Source=DESKTOP-WUTENGJ;Initial Catalog=HookNetWork;Persist Security Info=True;User ID=sa;Password=wutengjian123";
+        string ConnStr = "Data Source=JiannyWu;Initial Catalog=HookNetWork;Persist Security Info=True;User ID=sa;Password=wutengjian123";
         public void SaveList(List<ArticleWordDivisionInfo> DataList)
         {
             DataList = DataList.Where(x => x.Word.Length < 25).ToList();

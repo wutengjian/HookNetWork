@@ -25,7 +25,7 @@ namespace DataAnalysis
         {
             HashList = new List<ArticleInfo>();
             dic = new Dictionary<string, ArticleWordDivisionInfo>();
-            ConnStr = "Data Source=DESKTOP-WUTENGJ;Initial Catalog=HookNetWork;Persist Security Info=True;User ID=sa;Password=wutengjian123";
+            ConnStr = "Data Source=JiannyWu;Initial Catalog=HookNetWork;Persist Security Info=True;User ID=sa;Password=wutengjian123";
         }
         public void Run()
         {
