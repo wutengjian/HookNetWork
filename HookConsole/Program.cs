@@ -13,7 +13,9 @@ namespace HookConsole
     {
         static void Main(string[] args)
         {
-            RunDownloader();
+            if (ConfigurationManager.AppSettings["RunDownloader"] == "true")
+                RunDownloader();
+            if (ConfigurationManager.AppSettings["RunDataAnalysis"] == "true")
             RunDataAnalysis();
             while (true)
             {

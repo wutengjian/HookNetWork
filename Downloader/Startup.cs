@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using System.Configuration;
 
 namespace Downloader
 {
@@ -29,13 +30,18 @@ namespace Downloader
         private void Run()
         {
             Console.WriteLine("Downloader =》Run @" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:fff"));
+            var DownloaderJob = ConfigurationManager.AppSettings["DownloaderJob"];
             Dictionary<string, IDownload> dic = new Dictionary<string, IDownload>();
-            dic.Add("GlobalTimes", new EnglishDownload.GlobalTimes());
-            dic.Add("NewsWeek", new EnglishDownload.NewsWeek());
-            dic.Add("NewsUN", new EnglishDownload.NewsUN());
-            dic.Add("TingRoomNovel", new EnglishDownload.TingRoomNovel());
-            dic.Add("FanYiHuJiang", new EnglishDownload.FanYiHuJiang());
-            dic.Add("FanYiBaiduAPI", new EnglishDownload.FanYiBaiduAPI());
+            foreach (var job in DownloaderJob.Split(','))
+            {
+                if (job == "GlobalTimes") dic.Add("GlobalTimes", new EnglishDownload.GlobalTimes());
+                if (job == "NewsWeek") dic.Add("NewsWeek", new EnglishDownload.NewsWeek());
+                if (job == "NewsUN") dic.Add("NewsUN", new EnglishDownload.NewsUN());
+                if (job == "TingRoomNovel") dic.Add("TingRoomNovel", new EnglishDownload.TingRoomNovel());
+                if (job == "FanYiHuJiang") dic.Add("FanYiHuJiang", new EnglishDownload.FanYiHuJiang());
+                if (job == "FanYiBaiduAPI") dic.Add("FanYiBaiduAPI", new EnglishDownload.FanYiBaiduAPI());
+                if (job == "TencentQT") dic.Add("TencentQT", new SharesDownload.TencentQT());
+            }
             foreach (string key in dic.Keys)
             {
                 try
