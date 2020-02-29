@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using DBModels;
+using DBModels.DBSharesModels;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -99,6 +100,28 @@ namespace DBRepertory
             {
                 conn.Open();
                 List = conn.Query<SharesBasicInfo>("select * from [dbo].[SharesBasic] with(nolock) where DataStatus=1 ", commandTimeout: 3000).ToList();
+                conn.Close();
+            }
+            return List;
+        }
+        public List<SharesRealDateInfo> GetSharesRealDateList(string ShareType, string ShareCode)
+        {
+            string query = @"select ShareType,ShareCode,ShareDate,OpeningQuotation, ClosingQuotation, UpsDowns,Gain,Minimum, Highest,Volume, Turnover,ChangeHands,convert(varchar(50), HashCode) as HashCode,replace(gain,'%','') as StockRate 
+  from SharesRealDate where ShareDate>'2018-01-01' ";
+            if (string.IsNullOrEmpty(ShareType) == false)
+            {
+                query += " and ShareType='" + ShareType + "'";
+            }
+            if (string.IsNullOrEmpty(ShareCode) == false)
+            {
+                query += " and ShareCode='" + ShareCode + "'";
+            }
+            query += " order by ShareDate desc";
+            List<SharesRealDateInfo> List = new List<SharesRealDateInfo>();
+            using (var conn = new SqlConnection(ConnStr))
+            {
+                conn.Open();
+                List = conn.Query<SharesRealDateInfo>(query, commandTimeout: 3000).ToList();
                 conn.Close();
             }
             return List;

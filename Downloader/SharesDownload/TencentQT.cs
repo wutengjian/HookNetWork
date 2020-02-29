@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
+using DBModels.DBSharesModels;
 
 namespace Downloader.SharesDownload
 {
@@ -175,7 +176,7 @@ User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like
         #region 历史股价
         public void StockHistoryPrice()
         {
-             _headers = @"Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8
+            _headers = @"Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8
 Accept-Encoding: gzip, deflate
 Accept-Language: zh-CN,zh;q=0.9,en;q=0.8
 Cache-Control: max-age=0
@@ -221,9 +222,9 @@ User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like
 
                     listHistory.Add(new SharesRealDateInfo()
                     {
-                        ShareDate = 日期,
-                        OpeningQuotation = 开盘,
-                        ClosingQuotation = 收盘,
+                        ShareDate = Convert.ToDateTime(日期),
+                        OpeningQuotation = Convert.ToDouble(开盘),
+                        ClosingQuotation = Convert.ToDouble(收盘),
                         UpsDowns = 涨跌,
                         Gain = 涨幅,
                         Minimum = 最低,

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DBModels
+namespace DBModels.DBSharesModels
 {
     public class SharesBasicInfo
     {
@@ -108,57 +108,5 @@ namespace DBModels
         public string LimitPrice { get; set; }
         public DateTime DownloadDate { get; set; }
         public DateTime CreateTime { get; set; }
-    }
-
-    public class SharesRealDateInfo
-    {
-        /// <summary>
-        /// 
-        /// </summary>
-        public string ShareType { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public string ShareCode { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public string ShareDate { get; set; }
-        /// <summary>
-        ///  开盘 
-        /// </summary>
-        public string OpeningQuotation { get; set; }
-        /// <summary>
-        /// 收盘 
-        /// </summary>
-        public string ClosingQuotation { get; set; }
-        /// <summary>
-        /// 涨跌 
-        /// </summary>
-        public string UpsDowns { get; set; }
-        /// <summary>
-        /// 涨幅 
-        /// </summary>
-        public string Gain { get; set; }
-        /// <summary>
-        /// 最低
-        /// </summary>
-        public string Minimum { get; set; }
-        /// <summary>
-        /// 最高
-        /// </summary>
-        public string Highest { get; set; }
-        /// <summary>
-        /// 成交量 
-        /// </summary>
-        public string Volume { get; set; }
-        /// <summary>
-        /// 成交额
-        /// </summary>
-        public string Turnover { get; set; }
-        /// <summary>
-        /// 换手 
-        /// </summary>
-        public string ChangeHands { get; set; }
-    }
+    } 
 }

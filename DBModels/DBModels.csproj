@@ -44,9 +44,14 @@
     <Compile Include="ArticleFileInfo.cs" />
     <Compile Include="ArticleInfo.cs" />
     <Compile Include="ArticleWordDivisionInfo.cs" />
+    <Compile Include="DBSharesModels\AnalysisMethod.cs" />
+    <Compile Include="DBSharesModels\CombinationRecommendation.cs" />
+    <Compile Include="DBSharesModels\RecommendMethod.cs" />
+    <Compile Include="DBSharesModels\SharesBasicInfo.cs" />
+    <Compile Include="DBSharesModels\SharesRealDateInfo.cs" />
+    <Compile Include="DBSharesModels\ShareStatisticsRecord.cs" />
     <Compile Include="LanguageComparisonInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SharesBasicInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -71,6 +71,7 @@
     <Compile Include="LanguageComparisonDal.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SharesDal.cs" />
+    <Compile Include="ShareStatisticsRecordDal.cs" />
     <Compile Include="SQLiteDbContext.cs" />
     <Compile Include="SqlServerBulkCopy.cs" />
   </ItemGroup>

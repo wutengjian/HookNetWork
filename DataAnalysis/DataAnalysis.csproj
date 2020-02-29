@@ -49,6 +49,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CalculationSharesBase.cs" />
+    <Compile Include="ICalculationShares.cs" />
+    <Compile Include="SharesAnalysisMonitor.cs" />
+    <Compile Include="SharesAnalysis\ContinuedShares.cs" />
+    <Compile Include="SharesAnalysis\StatisticsShares.cs" />
+    <Compile Include="SharesAnalysis\VertexShares.cs" />
+    <Compile Include="SharesAnalysis\VolatilityShares.cs" />
+    <Compile Include="SharesAnalysis\WaveShares.cs" />
+    <Compile Include="SharesResultFeedback.cs" />
+    <Compile Include="SharesRMMonitor.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WordDivision.cs" />
