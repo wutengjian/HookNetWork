@@ -61,7 +61,7 @@
     <GenerateManifests>true</GenerateManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <SignManifests>true</SignManifests>
+    <SignManifests>false</SignManifests>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Autofac, Version=4.8.1.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
@@ -112,10 +112,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\BasicExpansion\BasicExpansion.csproj">
-      <Project>{aa68907f-9b20-4479-b48c-3e5e16cfe3f3}</Project>
-      <Name>BasicExpansion</Name>
-    </ProjectReference>
     <ProjectReference Include="..\BasicToolKit\BasicToolKit.csproj">
       <Project>{450acba0-a2ee-4af0-a3be-bfab2ab433ee}</Project>
       <Name>BasicToolKit</Name>

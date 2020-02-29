@@ -103,5 +103,16 @@ namespace DBRepertory
             }
             return List;
         }
+        public DateTime GetMaxDate()
+        {
+            DateTime dt;
+            using (var conn = new SqlConnection(ConnStr))
+            {
+                conn.Open();
+                dt = conn.QueryFirst<DateTime>("select max(ShareDate) from [dbo].[SharesRealDate] with(nolock)", commandTimeout: 3000);
+                conn.Close();
+            }
+            return dt;
+        }
     }
 }

@@ -5,8 +5,9 @@ using System.IO;
 using System.Text.RegularExpressions;
 using System.Threading;
 using DBModels;
-using BasicExpansion;
+
 using DBRepertory;
+using BasicToolKit;
 
 namespace Downloader.EnglishDownload
 {

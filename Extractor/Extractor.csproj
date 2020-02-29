@@ -69,10 +69,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\BasicExpansion\BasicExpansion.csproj">
-      <Project>{aa68907f-9b20-4479-b48c-3e5e16cfe3f3}</Project>
-      <Name>BasicExpansion</Name>
-    </ProjectReference>
     <ProjectReference Include="..\BasicToolKit\BasicToolKit.csproj">
       <Project>{450acba0-a2ee-4af0-a3be-bfab2ab433ee}</Project>
       <Name>BasicToolKit</Name>

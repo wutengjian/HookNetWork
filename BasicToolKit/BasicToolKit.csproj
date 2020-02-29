@@ -66,6 +66,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extension.cs" />
+    <Compile Include="FileHelper.cs" />
     <Compile Include="ILogger.cs" />
     <Compile Include="NLogSQLite.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
