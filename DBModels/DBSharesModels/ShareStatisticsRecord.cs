@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DBModels.DBSharesModels
 {
-   public class ShareStatisticsRecord
+    public class ShareStatisticsRecord
     {
         /// <summary>
         /// 自增长ID
@@ -34,5 +34,22 @@ namespace DBModels.DBSharesModels
         /// 统计结果
         /// </summary>
         public double Statistics { get; set; }
+    }
+    public class StatisticalResults
+    {
+        public int ID { get; set; }
+        public string HashCode { get; set; }
+        public string StockNo { get; set; }
+        public string MethodType { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
+        public int LevelMap { get; set; }
+        public double MaxValue { get; set; }
+        public double MinValue { get; set; }
+        public double AvgValue { get; set; }
+        /// <summary>
+        /// 众数
+        /// </summary>
+        public double MostValue { get; set; }
     }
 }

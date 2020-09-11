@@ -28,7 +28,7 @@ namespace Downloader
             Run();
         }
         private void Run()
-        {
+        { 
             Console.WriteLine("Downloader =》Run @" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:fff"));
             var DownloaderJob = ConfigurationManager.AppSettings["DownloaderJob"];
             Dictionary<string, IDownload> dic = new Dictionary<string, IDownload>();

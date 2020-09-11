@@ -3,25 +3,24 @@ using DBModels.DBSharesModels;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Linq;
+using DBRepertory;
 
-namespace DataAnalysis.CalculationAnalysis
+namespace DataAnalysis.SharesAnalysis
 {
     /// <summary>
     /// 持续上涨、下跌
     /// </summary>
     public class ContinuedShares : CalculationSharesBase
     {
-        List<ContinuedRecord> records =null;
+        List<ShareStatisticsRecord> records = null;
         public override void Run(List<SharesRealDateInfo> list)
         {
-            base.Method = "ContinuedAnalysis";
-            records = new List<ContinuedRecord>();
+            records = new List<ShareStatisticsRecord>();
             //1：找出连续上升3次以上的点 集合
             ContinuedRise(list);
-
             ContinuedFall(list);
-
-            Console.WriteLine(Method);
+            SaveData();
         }
         /// <summary>
         /// 上涨(10次)
@@ -44,9 +43,10 @@ namespace DataAnalysis.CalculationAnalysis
                     {
                         var dIndex = i - (count1 + count2);//取到上涨的初始点
                         var data = getPointList(dIndex, list, 10, 60);
-                        if (data != null && data.Count > 0)
+                        if (data != null)
                         {
-                            dic.Add(i, data);
+                            data.MethodType = "ContinuedShares>>ContinuedRise";
+                            records.Add(data);
                         }
                     }
                     count1 = 0;
@@ -76,9 +76,10 @@ namespace DataAnalysis.CalculationAnalysis
                     {
                         var dIndex = i - (count1 + count2);//取到下跌的初始点
                         var data = getPointList(dIndex, list, 10, 60);
-                        if (data != null && data.Count > 0)
+                        if (data != null)
                         {
-                            dic.Add(i, data);
+                            data.MethodType = "ContinuedShares>>ContinuedFall";
+                            records.Add(data);
                         }
                     }
                     count1 = 0;
@@ -95,17 +96,17 @@ namespace DataAnalysis.CalculationAnalysis
         /// <param name="minNum">最小数</param>
         /// <param name="maxNum">最大数</param>
         /// <returns></returns>
-        private List<double> getPointList(int dIndex, List<SharesRealDateInfo> list, int minNum, int maxNum)
+        private ShareStatisticsRecord getPointList(int dIndex, List<SharesRealDateInfo> list, int minNum, int maxNum)
         {
             if (minNum > dIndex)
                 return null;
             int cIndex = dIndex;
-            List<double> data = new List<double>();
+            List<DateTime> data = new List<DateTime>();
             if (dIndex > maxNum)
             {
                 while (maxNum > 0)
                 {
-                    data.Add(list[cIndex--].ClosingQuotation);
+                    data.Add(list[cIndex--].ShareDate);
                     maxNum--;
                 }
             }
@@ -113,27 +114,24 @@ namespace DataAnalysis.CalculationAnalysis
             {
                 while (cIndex > 0)
                 {
-                    data.Add(list[cIndex--].ClosingQuotation);
+                    data.Add(list[cIndex--].ShareDate);
                 }
             }
-            return data;
+            if (data != null && data.Count > 0)
+            {
+                return new ShareStatisticsRecord() { Daily = DateTime.Now, EndDate = data.Max(), StartDate = data.Min(), StockNo = list[0].ShareType + list[0].ShareCode, Statistics = data.Count, HashCode = list[dIndex].HashCode };
+            }
+            return null;
         }
 
         //还需要继续分析 前驱数据的画像
 
         public override void SaveData()
         {
-            throw new NotImplementedException();
+            if (records == null && records.Count < 1)
+                return;
+            SharesRecordDal dal = new SharesRecordDal();
+            dal.InsertBulkRecord(records);
         }
-    }
-    public class ContinuedRecord
-    {
-        public int ID { get; set; }
-        public int StockId { get; set; }
-        public string StockNo { get; set; }
-        /// <summary>
-        /// 日期
-        /// </summary>
-        public DateTime Daily { get; set; } 
     }
 }

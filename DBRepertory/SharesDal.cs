@@ -107,7 +107,7 @@ namespace DBRepertory
         public List<SharesRealDateInfo> GetSharesRealDateList(string ShareType, string ShareCode)
         {
             string query = @"select ShareType,ShareCode,ShareDate,OpeningQuotation, ClosingQuotation, UpsDowns,Gain,Minimum, Highest,Volume, Turnover,ChangeHands,convert(varchar(50), HashCode) as HashCode,replace(gain,'%','') as StockRate 
-  from SharesRealDate where ShareDate>'2018-01-01' ";
+  from SharesRealDate with(nolock) where ShareDate>'2018-01-01' ";
             if (string.IsNullOrEmpty(ShareType) == false)
             {
                 query += " and ShareType='" + ShareType + "'";
@@ -125,6 +125,14 @@ namespace DBRepertory
                 conn.Close();
             }
             return List;
+        }
+        public void UpdateHashCode() {
+            using (var conn = new SqlConnection(ConnStr))
+            {
+                conn.Open();
+                conn.Execute("UPDATE [dbo].[SharesRealDate] SET HashCode=NEWID() WHERE HashCode IS NULL");
+                conn.Close();
+            } 
         }
         public DateTime GetMaxDate()
         {

@@ -4,7 +4,7 @@ using System.Text;
 using System.Linq;
 using System.Reflection;
 using DBRepertory;
-using DataAnalysis.CalculationAnalysis;
+using DataAnalysis.SharesAnalysis;
 using System.Threading;
 
 namespace DataAnalysis
@@ -28,26 +28,31 @@ namespace DataAnalysis
             //    }
             //}
             //list.Add(new StatisticsShares());
-            list.Add(new ContinuedShares());
-            //list.Add(new VertexShares());
+            //list.Add(new ContinuedShares());
+            list.Add(new VertexShares());
             //list.Add(new VolatilityShares());
             //list.Add(new WaveShares());
+            list.Add(new ResultDimensionShares());
             SharesDal dal = new SharesDal();
+            dal.UpdateHashCode();
             var shares = dal.Getlist();
             foreach (var item in shares)
             {
                 try
                 {
-                    Thread.Sleep(1000);
+                    item.ShareType = "sh";
+                    item.ShareCode = "601258";
                     var data = dal.GetSharesRealDateList(item.ShareType, item.ShareCode);
-                    if (data == null || data.Count < 3)
+                    if (data == null || data.Count < 5)
                         continue;
                     foreach (var method in list)
                     {
                         method.Run(data);
-                    } 
+                    }
+                    Thread.Sleep(1000);
                 }
-                catch (Exception ex) {
+                catch (Exception ex)
+                {
                     Console.WriteLine(ex.Message);
                 }
             }

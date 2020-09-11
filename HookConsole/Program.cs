@@ -84,16 +84,7 @@ namespace HookConsole
                       Startup.ConfigureServices();
                       Startup.Configure();
                   });
-        }
-        public static void RunExtractor()
-        {
-            Task.Run(() =>
-                  {
-                      Scheduler.StartUp Startup = new Scheduler.StartUp();
-                      Startup.ConfigureServices();
-                      Startup.Configure();
-                  });
-        }
+        } 
         public static void RunDataAnalysis()
         {
             Task.Run(() =>

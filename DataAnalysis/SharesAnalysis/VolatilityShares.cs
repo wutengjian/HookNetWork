@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace DataAnalysis.CalculationAnalysis
+namespace DataAnalysis.SharesAnalysis
 {
     /// <summary>
     /// 波动性上涨/下跌
