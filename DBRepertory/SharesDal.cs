@@ -13,7 +13,7 @@ namespace DBRepertory
     public class SharesDal
     {
         string ConnStr = "Data Source=JiannyWu;Initial Catalog=HookNetWork;Persist Security Info=True;User ID=sa;Password=wutengjian123";
-        public void SaveList(List<SharesBasicInfo> ArticleList)
+        public void SaveList(List<SharesBasicInfo> ArticleList, string tableName = "SharesBasic")
         {
             var data = SqlServerBulkCopy.ToDataTable<SharesBasicInfo>(ArticleList);
             Dictionary<string, string> SqlMapping = new Dictionary<string, string>();
@@ -46,7 +46,7 @@ namespace DBRepertory
             SqlMapping.Add("CreateTime", "CreateTime");
             SqlServerBulkCopy.SqlBulkMapping(SqlMapping);
             SqlServerBulkCopy.ConnStr = ConnStr;
-            SqlServerBulkCopy.SqlBulkCopyToServer(data, "SharesBasic");
+            SqlServerBulkCopy.SqlBulkCopyToServer(data, tableName);
         }
         public void InsertBulk(List<SharesBasicInfo> ArticleList)
         {
@@ -107,7 +107,7 @@ namespace DBRepertory
         public List<SharesRealDateInfo> GetSharesRealDateList(string ShareType, string ShareCode)
         {
             string query = @"select ShareType,ShareCode,ShareDate,OpeningQuotation, ClosingQuotation, UpsDowns,Gain,Minimum, Highest,Volume, Turnover,ChangeHands,convert(varchar(50), HashCode) as HashCode,replace(gain,'%','') as StockRate 
-  from SharesRealDate where ShareDate>'2018-01-01' ";
+  from SharesRealDate with(nolock) where ShareDate>'2018-01-01' ";
             if (string.IsNullOrEmpty(ShareType) == false)
             {
                 query += " and ShareType='" + ShareType + "'";
@@ -125,6 +125,31 @@ namespace DBRepertory
                 conn.Close();
             }
             return List;
+        }
+
+        public List<SharesRealDateInfo> GetSharesRealDateList(DateTime startDate, DateTime endDate)
+        {
+            string query = @"select ShareType,ShareCode,ShareDate,OpeningQuotation, ClosingQuotation, UpsDowns,Gain,Minimum, Highest,Volume, Turnover,ChangeHands,convert(varchar(50), HashCode) as HashCode,replace(gain,'%','') as StockRate 
+  from SharesRealDate with(nolock) where ShareDate>='" + startDate.ToString("yyyy-MM-dd") + "' and ShareDate<'" + endDate.ToString("yyyy-MM-dd") + "'";
+            query += " order by ShareDate desc";
+            List<SharesRealDateInfo> List = new List<SharesRealDateInfo>();
+            using (var conn = new SqlConnection(ConnStr))
+            {
+                conn.Open();
+                List = conn.Query<SharesRealDateInfo>(query, commandTimeout: 3000).ToList();
+                conn.Close();
+            }
+            return List;
+        }
+
+        public void UpdateHashCode()
+        {
+            using (var conn = new SqlConnection(ConnStr))
+            {
+                conn.Open();
+                conn.Execute("UPDATE [dbo].[SharesRealDate] SET HashCode=NEWID() WHERE HashCode IS NULL");
+                conn.Close();
+            }
         }
         public DateTime GetMaxDate()
         {

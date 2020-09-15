@@ -57,6 +57,7 @@ namespace DBModels.DBSharesModels
         /// 换手 
         /// </summary>
         public string ChangeHands { get; set; }
+        public double ChangeHande { get; set; }
         public string HashCode { get; set; }
     }
 }

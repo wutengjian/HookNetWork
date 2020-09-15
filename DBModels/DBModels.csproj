@@ -46,6 +46,7 @@
     <Compile Include="ArticleWordDivisionInfo.cs" />
     <Compile Include="DBSharesModels\AnalysisMethod.cs" />
     <Compile Include="DBSharesModels\CombinationRecommendation.cs" />
+    <Compile Include="DBSharesModels\PriceRangeRecord.cs" />
     <Compile Include="DBSharesModels\RecommendMethod.cs" />
     <Compile Include="DBSharesModels\SharesBasicInfo.cs" />
     <Compile Include="DBSharesModels\SharesRealDateInfo.cs" />

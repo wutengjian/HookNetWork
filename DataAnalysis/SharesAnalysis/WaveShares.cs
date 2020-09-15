@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace DataAnalysis.CalculationAnalysis
+namespace DataAnalysis.SharesAnalysis
 {
     /// <summary>
     /// 波动剧烈(涨、跌、平三种情况的波动)
@@ -12,8 +12,7 @@ namespace DataAnalysis.CalculationAnalysis
     public class WaveShares : CalculationSharesBase
     {
         public override void Run(List<SharesRealDateInfo> list)
-        {
-            base.Method = "WaveAnalysis"; 
+        { 
             ShockWave(list);
         }
         /// <summary>

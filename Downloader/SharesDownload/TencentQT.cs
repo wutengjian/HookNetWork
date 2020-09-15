@@ -13,8 +13,10 @@ namespace Downloader.SharesDownload
 {
     public class TencentQT : DownloadBase
     {
+        //参考地址  https://blog.csdn.net/Cupedy/article/details/53261697
         private Dictionary<int, map> DataMap;
         public List<SharesBasicInfo> DataList;
+        SharesDal dal = null;
 
         string CodeType = "";
         public override void Init()
@@ -83,26 +85,21 @@ User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like
 
         public override void Run()
         {
-            //base.DeleteFile(RootAddress);
-            //Download();
-            StockHistoryPrice();
+            base.DeleteFile(RootAddress);
+            dal = new SharesDal();
+            var list = dal.Getlist();
+            Download(list);
+           // StockHistoryPrice(list);
         }
 
-        public void Download()
+        public void Download(List<SharesBasicInfo> list)
         {
             Console.WriteLine("Downloader =》TencentQT>开始下载 @" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:fff"));
-            var SharesList = new List<string>();
-            CodeType = "sh";
-            for (int i = 1; i < 1000000; i++)
+
+            foreach (var model in list)
             {
-                var ShareCode = GetCode(CodeType, i);
-                LatestQuotation(ShareCode);
-            }
-            CodeType = "sz";
-            for (int i = 1; i < 1000000; i++)
-            {
-                var ShareCode = GetCode(CodeType, i);
-                LatestQuotation(ShareCode);
+                LatestQuotation(model.ShareType + model.ShareCode);
+                Thread.Sleep(800);
             }
             Console.WriteLine("Downloader =》TencentQT>下载完成 @" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:fff"));
         }
@@ -118,7 +115,6 @@ User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like
             // httpContent = "v_sz000858='51~五 粮 液~000858~101.25~103.13~103.40~288484~137485~150799~101.23~5~101.22~15~101.21~164~101.20~127~101.19~9~101.25~53~101.26~76~101.27~65~101.28~124~101.29~287~15:00:04/101.25/4611/S/46684249/15960|14:57:00/101.37/87/B/881851/15827|14:56:57/101.36/19/S/192595/15823|14:56:54/101.37/91/S/922392/15820|14:56:51/101.37/93/B/942719/15817|14:56:48/101.37/263/B/2665611/15813~20190531153004~-1.88~-1.82~103.40~101.03~101.25/288484/2938475709~288484~293848~0.76~26.40~~103.40~101.03~2.30~3843.22~3930.13~5.62~113.44~92.82~0.81~-285~101.86~15.17~29.36~~~1.40~293847.57';";
             if (httpContent.Contains("v_pv_none_match"))
                 return;
-            Thread.Sleep(5);
             var arr = httpContent.Split('~');
             if (arr.Length >= DataMap.Keys.Count)
             {
@@ -130,9 +126,8 @@ User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like
                 ExtractLatestQuotation();
             }
             if (DataList.Count >= 100)
-            {
-                SharesDal dal = new SharesDal();
-                dal.SaveList(DataList);
+            { 
+                dal.SaveList(DataList, "SharesDate");
                 DataList = new List<SharesBasicInfo>();
             }
         }
@@ -142,8 +137,9 @@ User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like
             SharesBasicInfo model = new SharesBasicInfo()
             {
                 ShareType = CodeType,
-                ShareCode = DataMap[2].DataValue,
                 ShareName = DataMap[1].DataValue,
+                ShareCode = DataMap[2].DataValue,
+                
                 YesterdayHarvest = DataMap[4].DataValue,
                 TodayOpens = DataMap[5].DataValue,
                 VolumeHand = DataMap[6].DataValue,
@@ -174,7 +170,7 @@ User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like
         #endregion
 
         #region 历史股价
-        public void StockHistoryPrice()
+        public void StockHistoryPrice(List<SharesBasicInfo> list)
         {
             _headers = @"Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8
 Accept-Encoding: gzip, deflate
@@ -188,13 +184,13 @@ User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like
             //http://q.stock.sohu.com/hisHq?code=cn_600009&start=20180716&end=20180720&stat=1&order=D&period=d&callback=historySearchHandler&rt=jsonp
             //各参数的含义为：code：股票代码，以cn_开头，start:起始时间，end：截止时间，stat:统计信息，为0的时候就不返回stat对应的值了，order：排序方法（D表示降序排，A表示升序排），period：数据周期（d表示日线，m表示月线，w表示周线）。
             //返回的数据以这条为例"2018-07-20","61.22","61.83","0.61","1.00%","61.22","62.69","57637","35856.55","0.53%"分别表示日期，开盘，收盘，涨跌，涨幅，最低，最高，成交量，成交额，换手
-            SharesDal dal = new SharesDal();
-            var list = dal.Getlist();
-            Regex rContext = new Regex("hq'\\:\\[(.*?\\])\\]", RegexOptions.Singleline | RegexOptions.IgnoreCase);
+        
+            var dt = dal.GetMaxDate();
+            Regex rContext = new Regex("hq\"\\:\\[(.*?\\])\\]", RegexOptions.Singleline | RegexOptions.IgnoreCase);
             Regex rList = new Regex("\\[(.*?)\\]", RegexOptions.Singleline | RegexOptions.IgnoreCase);
             foreach (var model in list)
             {
-                string url = string.Format("http://q.stock.sohu.com/hisHq?code=cn_{0}&start=20000101&end=20101231&stat=1&order=D&period=d&callback=historySearchHandler&rt=jsonp", model.ShareCode);
+                string url = string.Format("http://q.stock.sohu.com/hisHq?code=cn_{0}&start={1}&end={2}&stat=1&order=D&period=d&callback=historySearchHandler&rt=jsonp", model.ShareCode, DateTime.Now.ToString("yyyyMMdd"), dt.ToString("yyyyMMdd"));
                 string httpContent = httpFactory.http(url, "GET", _headers, null, Encoding.UTF8, null).Replace('"', '\'');
                 if (string.IsNullOrEmpty(httpContent) || httpContent.Contains("non-existent"))
                 {

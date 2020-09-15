@@ -8,11 +8,7 @@ using System.Text;
 namespace DataAnalysis
 {
     public abstract class CalculationSharesBase : ICalculationShares
-    {
-        /// <summary>
-        /// 方式
-        /// </summary>
-        public string Method { get; set; }
+    { 
         /// <summary>
         /// 
         /// </summary>
