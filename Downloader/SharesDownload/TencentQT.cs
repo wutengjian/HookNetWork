@@ -89,14 +89,13 @@ User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like
             dal = new SharesDal();
             var list = dal.Getlist();
             Download(list);
-            // StockHistoryPrice(list); 
+            if (DateTime.Now.DayOfWeek == DayOfWeek.Sunday)
+                StockHistoryPrice(list);
         }
 
         public void Download(List<SharesBasicInfo> list)
         {
-
             Console.WriteLine("Downloader =》TencentQT>开始下载 @" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:fff"));
-
             foreach (var item in list)
             {
                 LatestQuotation(item.ShareType, item.ShareCode);
@@ -112,7 +111,7 @@ User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like
         public void LatestQuotation(string CodeType, string ShareCode)
         {
             //http://qt.gtimg.cn/q=sz000858
-            string httpContent = httpFactory.http(RootUrl + "/q=" + ShareCode, "GET", _headers, null, Encoding.GetEncoding("gbk"), null).Replace("&gt;", " ").Replace(">>", " ").Replace('"', '\'');
+            string httpContent = httpFactory.http(RootUrl + "/q=" + CodeType + ShareCode, "GET", _headers, null, Encoding.GetEncoding("gbk"), null).Replace("&gt;", " ").Replace(">>", " ").Replace('"', '\'');
             // httpContent = "v_sz000858='51~五 粮 液~000858~101.25~103.13~103.40~288484~137485~150799~101.23~5~101.22~15~101.21~164~101.20~127~101.19~9~101.25~53~101.26~76~101.27~65~101.28~124~101.29~287~15:00:04/101.25/4611/S/46684249/15960|14:57:00/101.37/87/B/881851/15827|14:56:57/101.36/19/S/192595/15823|14:56:54/101.37/91/S/922392/15820|14:56:51/101.37/93/B/942719/15817|14:56:48/101.37/263/B/2665611/15813~20190531153004~-1.88~-1.82~103.40~101.03~101.25/288484/2938475709~288484~293848~0.76~26.40~~103.40~101.03~2.30~3843.22~3930.13~5.62~113.44~92.82~0.81~-285~101.86~15.17~29.36~~~1.40~293847.57';";
             if (httpContent.Contains("v_pv_none_match"))
                 return;
@@ -189,11 +188,11 @@ User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like
             //返回的数据以这条为例"2018-07-20","61.22","61.83","0.61","1.00%","61.22","62.69","57637","35856.55","0.53%"分别表示日期，开盘，收盘，涨跌，涨幅，最低，最高，成交量，成交额，换手
 
             var dt = dal.GetMaxDate();
-            Regex rContext = new Regex("hq\"\\:\\[(.*?\\])\\]", RegexOptions.Singleline | RegexOptions.IgnoreCase);
+            Regex rContext = new Regex("hq[\"']\\:\\[(.*?\\])\\]", RegexOptions.Singleline | RegexOptions.IgnoreCase);
             Regex rList = new Regex("\\[(.*?)\\]", RegexOptions.Singleline | RegexOptions.IgnoreCase);
             foreach (var model in list)
             {
-                string url = string.Format("http://q.stock.sohu.com/hisHq?code=cn_{0}&start={1}&end={2}&stat=1&order=D&period=d&callback=historySearchHandler&rt=jsonp", model.ShareCode, DateTime.Now.ToString("yyyyMMdd"), dt.ToString("yyyyMMdd"));
+                string url = string.Format("https://q.stock.sohu.com/hisHq?code=cn_{0}&start={1}&end={2}&stat=1&order=D&period=d&callback=historySearchHandler&rt=jsonp", model.ShareCode, dt.ToString("yyyyMMdd"), DateTime.Now.ToString("yyyyMMdd"));
                 string httpContent = httpFactory.http(url, "GET", _headers, null, Encoding.UTF8, null).Replace('"', '\'');
                 if (string.IsNullOrEmpty(httpContent) || httpContent.Contains("non-existent"))
                 {
