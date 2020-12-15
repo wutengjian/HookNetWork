@@ -36,8 +36,12 @@ namespace DataAnalysis
             try
             {
                 //new WordDivision().Run();
+<<<<<<< HEAD
                 new PriceRangeShares().Run();
                 //new SharesAnalysisMonitor().Run();
+=======
+                new SharesAnalysisMonitor().Run();
+>>>>>>> d21cf772bb42714a33342a756e55a4f28aa29128
             }
             catch (Exception ex)
             {

@@ -29,7 +29,11 @@ namespace DataAnalysis
             //}
             //list.Add(new StatisticsShares());
             //list.Add(new ContinuedShares());
+<<<<<<< HEAD
             //list.Add(new VertexShares());
+=======
+            list.Add(new VertexShares());
+>>>>>>> d21cf772bb42714a33342a756e55a4f28aa29128
             //list.Add(new VolatilityShares());
             //list.Add(new WaveShares());
             list.Add(new ResultDimensionShares());
@@ -40,8 +44,13 @@ namespace DataAnalysis
             {
                 try
                 {
+<<<<<<< HEAD
                     //item.ShareType = "sh";
                     //item.ShareCode = "601258";
+=======
+                    item.ShareType = "sh";
+                    item.ShareCode = "601258";
+>>>>>>> d21cf772bb42714a33342a756e55a4f28aa29128
                     var data = dal.GetSharesRealDateList(item.ShareType, item.ShareCode);
                     if (data == null || data.Count < 5)
                         continue;
@@ -49,7 +58,11 @@ namespace DataAnalysis
                     {
                         method.Run(data);
                     }
+<<<<<<< HEAD
                     Thread.Sleep(100);
+=======
+                    Thread.Sleep(1000);
+>>>>>>> d21cf772bb42714a33342a756e55a4f28aa29128
                 }
                 catch (Exception ex)
                 {

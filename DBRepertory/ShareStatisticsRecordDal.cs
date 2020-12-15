@@ -32,7 +32,7 @@ namespace DBRepertory
                 conn.Open(); conn.Execute(sql, list, commandTimeout: 60);
                 conn.Close();
             }
-        }
+        } 
         public void InsertBulkRecord_PriceRange(List<PriceRangeRecord> list) {
               string sql = string.Format(@"INSERT INTO Record_PriceRange(StartDate,EndDate,RatePrice,DataNum,ShareNum,TotalNum,ExecutionTime) VALUES(@StartDate,@EndDate,@RatePrice,@DataNum,@ShareNum,@TotalNum,@ExecutionTime)");
             using (var conn = new SqlConnection(ConnStr))
@@ -40,6 +40,6 @@ namespace DBRepertory
                 conn.Open(); conn.Execute(sql, list, commandTimeout: 60);
                 conn.Close();
             }
-        }
+        } 
     }
 }

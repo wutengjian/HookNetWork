@@ -52,8 +52,8 @@
     <Compile Include="CalculationSharesBase.cs" />
     <Compile Include="ICalculationShares.cs" />
     <Compile Include="SharesAnalysisMonitor.cs" />
-    <Compile Include="SharesAnalysis\ContinuedShares.cs" />
-    <Compile Include="SharesAnalysis\PriceRangeShares.cs" />
+    <Compile Include="SharesAnalysis\ContinuedShares.cs" /> 
+    <Compile Include="SharesAnalysis\PriceRangeShares.cs" /> 
     <Compile Include="SharesAnalysis\ResultDimensionShares.cs" />
     <Compile Include="SharesAnalysis\StatisticsShares.cs" />
     <Compile Include="SharesAnalysis\VertexShares.cs" />

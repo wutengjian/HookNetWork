@@ -125,7 +125,7 @@ namespace DBRepertory
                 conn.Close();
             }
             return List;
-        }
+        } 
 
         public List<SharesRealDateInfo> GetSharesRealDateList(DateTime startDate, DateTime endDate)
         {
@@ -143,13 +143,13 @@ namespace DBRepertory
         }
 
         public void UpdateHashCode()
-        {
+        { 
             using (var conn = new SqlConnection(ConnStr))
             {
                 conn.Open();
                 conn.Execute("UPDATE [dbo].[SharesRealDate] SET HashCode=NEWID() WHERE HashCode IS NULL");
-                conn.Close();
-            }
+                conn.Close(); 
+            } 
         }
         public DateTime GetMaxDate()
         {

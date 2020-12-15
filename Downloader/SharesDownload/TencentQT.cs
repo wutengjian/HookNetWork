@@ -89,16 +89,17 @@ User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like
             dal = new SharesDal();
             var list = dal.Getlist();
             Download(list);
-           // StockHistoryPrice(list);
+            // StockHistoryPrice(list); 
         }
 
         public void Download(List<SharesBasicInfo> list)
         {
+
             Console.WriteLine("Downloader =》TencentQT>开始下载 @" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:fff"));
 
-            foreach (var model in list)
+            foreach (var item in list)
             {
-                LatestQuotation(model.ShareType + model.ShareCode);
+                LatestQuotation(item.ShareType, item.ShareCode);
                 Thread.Sleep(800);
             }
             Console.WriteLine("Downloader =》TencentQT>下载完成 @" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:fff"));
@@ -108,7 +109,7 @@ User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like
         /// 最新报价
         /// </summary>
         /// <param name="ShareCode"></param>
-        public void LatestQuotation(string ShareCode)
+        public void LatestQuotation(string CodeType, string ShareCode)
         {
             //http://qt.gtimg.cn/q=sz000858
             string httpContent = httpFactory.http(RootUrl + "/q=" + ShareCode, "GET", _headers, null, Encoding.GetEncoding("gbk"), null).Replace("&gt;", " ").Replace(">>", " ").Replace('"', '\'');
@@ -123,15 +124,15 @@ User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like
                     DataMap[key].DataValue = arr[key];
                     Console.WriteLine(DataMap[key].mapDescribe + "：" + arr[key]);
                 }
-                ExtractLatestQuotation();
+                ExtractLatestQuotation(CodeType);
             }
             if (DataList.Count >= 100)
-            { 
+            {
                 dal.SaveList(DataList, "SharesDate");
                 DataList = new List<SharesBasicInfo>();
             }
         }
-        public void ExtractLatestQuotation()
+        public void ExtractLatestQuotation(string CodeType)
         {
             Console.WriteLine("Downloader =》TencentQT>解析 @" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:fff"));
             SharesBasicInfo model = new SharesBasicInfo()
@@ -139,7 +140,7 @@ User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like
                 ShareType = CodeType,
                 ShareName = DataMap[1].DataValue,
                 ShareCode = DataMap[2].DataValue,
-                
+
                 YesterdayHarvest = DataMap[4].DataValue,
                 TodayOpens = DataMap[5].DataValue,
                 VolumeHand = DataMap[6].DataValue,
@@ -172,19 +173,21 @@ User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like
         #region 历史股价
         public void StockHistoryPrice(List<SharesBasicInfo> list)
         {
-            _headers = @"Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8
-Accept-Encoding: gzip, deflate
-Accept-Language: zh-CN,zh;q=0.9,en;q=0.8
+            _headers = @"
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3
+Accept-Encoding: gzip, deflate, br
+Accept-Language: zh-CN,zh;q=0.9
 Cache-Control: max-age=0
-Connection: keep-alive
-Host: q.stock.sohu.com
+Sec-Fetch-Mode: navigate
+Sec-Fetch-Site: none
+Sec-Fetch-User: 1
 Upgrade-Insecure-Requests: 1
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36";
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36";
             httpFactory = new HttpRequestFactory(true);
             //http://q.stock.sohu.com/hisHq?code=cn_600009&start=20180716&end=20180720&stat=1&order=D&period=d&callback=historySearchHandler&rt=jsonp
             //各参数的含义为：code：股票代码，以cn_开头，start:起始时间，end：截止时间，stat:统计信息，为0的时候就不返回stat对应的值了，order：排序方法（D表示降序排，A表示升序排），period：数据周期（d表示日线，m表示月线，w表示周线）。
             //返回的数据以这条为例"2018-07-20","61.22","61.83","0.61","1.00%","61.22","62.69","57637","35856.55","0.53%"分别表示日期，开盘，收盘，涨跌，涨幅，最低，最高，成交量，成交额，换手
-        
+
             var dt = dal.GetMaxDate();
             Regex rContext = new Regex("hq\"\\:\\[(.*?\\])\\]", RegexOptions.Singleline | RegexOptions.IgnoreCase);
             Regex rList = new Regex("\\[(.*?)\\]", RegexOptions.Singleline | RegexOptions.IgnoreCase);
@@ -197,10 +200,12 @@ User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like
                     continue;
                 }
                 httpContent = rContext.Match(httpContent).Value;
+                if (string.IsNullOrEmpty(httpContent))
+                    continue;
                 List<SharesRealDateInfo> listHistory = new List<SharesRealDateInfo>(1000);
                 foreach (Match m in rList.Matches(httpContent))
                 {
-                    var arr = m.Value.Split(',');
+                    var arr = m.Value.Replace("'", "").Replace("[", "").Replace("]", "").Split(',');
                     if (arr.Length < 10)
                     {
                         break;
